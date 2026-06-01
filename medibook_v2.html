@@ -1,0 +1,2337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediBook Africa — Digital Health Passport</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   MEDIBOOK AFRICA v2.0 — Complete Healthcare Platform
+   Solving Africa's Health Records Challenge
+═══════════════════════════════════════════════════════════════ */
+:root {
+  --P:    #0f5c8f;   /* Primary blue */
+  --P1:   #0a4170;   /* Primary dark */
+  --P2:   #e4f2fb;   /* Primary light */
+  --P3:   #c8e5f7;
+  --G:    #0d9e6e;   /* Green */
+  --G2:   #e0f5ee;
+  --A:    #e8451e;   /* Accent red */
+  --A2:   #fff0ec;
+  --W:    #f59e0b;   /* Warning amber */
+  --W2:   #fef9ec;
+  --pur:  #7c3aed;
+  --pur2: #f0ebff;
+  --teal: #0891b2;
+  --teal2:#e0f7fa;
+  --bg:   #f0f4f8;
+  --bg2:  #e8edf4;
+  --sf:   #ffffff;
+  --sf2:  #f7f9fc;
+  --bd:   #d1dce8;
+  --bd2:  #b8c8dc;
+  --tx:   #0f1f35;
+  --tx2:  #3d5270;
+  --tx3:  #7a92b0;
+  --sw:   260px;
+  --r:    14px;
+  --r2:   10px;
+  --sh:   0 2px 16px rgba(15,92,143,.09);
+  --sh2:  0 6px 32px rgba(15,92,143,.14);
+  --font: 'Sora', sans-serif;
+  --disp: 'Playfair Display', serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--tx);font-size:14px;line-height:1.6}
+button,input,textarea,select{font-family:var(--font)}
+a{text-decoration:none;color:inherit}
+img{max-width:100%}
+
+/* ─── UTILITIES ─── */
+.flex{display:flex}.items-center{align-items:center}.gap-8{gap:8px}.gap-12{gap:12px}.gap-16{gap:16px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.text-sm{font-size:12px}.text-xs{font-size:11px}.text-muted{color:var(--tx3)}
+.fw-6{font-weight:600}.fw-7{font-weight:700}
+.mb-1{margin-bottom:8px}.mb-2{margin-bottom:16px}.mb-3{margin-bottom:24px}
+.mt-2{margin-top:16px}
+.w-full{width:100%}
+.rounded{border-radius:var(--r)}
+.hidden{display:none!important}
+
+/* ─── PAGE SYSTEM ─── */
+.page{display:none;min-height:100vh;flex-direction:column}
+.page.active{display:flex}
+.page.active.dash{flex-direction:row}
+
+/* ─── BUTTONS ─── */
+.btn{padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.btn-P{background:var(--P);color:#fff}
+.btn-P:hover{background:var(--P1);transform:translateY(-1px);box-shadow:0 4px 14px rgba(15,92,143,.3)}
+.btn-G{background:var(--G);color:#fff}
+.btn-G:hover{background:#0b8a5c}
+.btn-A{background:var(--A);color:#fff}
+.btn-out{background:transparent;border:1.5px solid var(--P);color:var(--P)}
+.btn-out:hover{background:var(--P2)}
+.btn-ghost{background:transparent;border:1.5px solid var(--bd);color:var(--tx2)}
+.btn-ghost:hover{background:var(--bg)}
+.btn-lg{padding:13px 28px;font-size:15px;border-radius:12px}
+.btn-sm{padding:5px 12px;font-size:12px;border-radius:8px}
+.btn-pur{background:var(--pur);color:#fff}
+.btn-teal{background:var(--teal);color:#fff}
+
+/* ─── CARDS ─── */
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:20px}
+.card-sm{padding:14px}
+.card-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.card-title{font-size:15px;font-weight:600}
+.card-action{font-size:12px;color:var(--P);cursor:pointer;font-weight:600}
+.card-action:hover{text-decoration:underline}
+
+/* ─── BADGES ─── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.02em}
+.b-blue{background:var(--P2);color:var(--P)}
+.b-green{background:var(--G2);color:var(--G)}
+.b-red{background:var(--A2);color:var(--A)}
+.b-amber{background:var(--W2);color:#b45309}
+.b-gray{background:var(--bg);color:var(--tx2)}
+.b-pur{background:var(--pur2);color:var(--pur)}
+.b-teal{background:var(--teal2);color:var(--teal)}
+.dot-green::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--G);margin-right:4px}
+.dot-red::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--A);margin-right:4px}
+
+/* ─── FORM ─── */
+.fgroup{margin-bottom:14px}
+.fgroup label{display:block;font-size:12px;font-weight:600;color:var(--tx2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
+.finput{width:100%;padding:10px 14px;border:1.5px solid var(--bd);border-radius:10px;font-size:13px;transition:border-color .2s;background:var(--sf);color:var(--tx)}
+.finput:focus{outline:none;border-color:var(--P)}
+textarea.finput{resize:vertical;min-height:90px}
+select.finput{cursor:pointer}
+
+/* ─── STAT CARDS ─── */
+.stat-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:18px;transition:all .2s}
+.stat-card:hover{box-shadow:var(--sh2);transform:translateY(-2px)}
+.stat-num{font-size:2rem;font-weight:700;line-height:1;font-family:var(--disp)}
+.stat-lbl{font-size:11px;color:var(--tx3);margin-top:3px;font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+.stat-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.trend{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px}
+.trend-up{background:#ecfdf5;color:#059669}
+.trend-dn{background:var(--A2);color:var(--A)}
+
+/* ─── SIDEBAR ─── */
+.sidebar{width:var(--sw);min-height:100vh;background:linear-gradient(175deg,#0a2d4a 0%,#0f1f35 100%);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sb-brand{padding:20px 20px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sb-logo{font-family:var(--disp);font-size:22px;color:#fff;font-style:italic}
+.sb-tagline{font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-top:1px}
+.sb-user{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;gap:10px;align-items:center}
+.sb-avatar{width:40px;height:40px;border-radius:50%;background:var(--G);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff;flex-shrink:0}
+.sb-uname{color:#fff;font-size:13px;font-weight:600}
+.sb-urole{color:rgba(255,255,255,.4);font-size:11px}
+.sb-health-score{margin:12px 20px;background:rgba(13,158,110,.15);border:1px solid rgba(13,158,110,.25);border-radius:10px;padding:10px 14px}
+.sb-health-label{font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em}
+.sb-health-val{font-size:20px;font-weight:700;color:#4ade80;font-family:var(--disp)}
+.sb-health-bar{height:4px;background:rgba(255,255,255,.1);border-radius:2px;margin-top:6px}
+.sb-health-fill{height:100%;width:78%;background:linear-gradient(90deg,#4ade80,#16a34a);border-radius:2px}
+.sb-nav{flex:1;padding:10px 0}
+.sb-section{padding:8px 20px 3px;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);font-weight:600}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;color:rgba(255,255,255,.6);cursor:pointer;transition:all .2s;border-left:3px solid transparent;font-size:13px;font-weight:500}
+.nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav-item.active{background:rgba(255,255,255,.12);color:#fff;border-left-color:var(--G)}
+.nav-icon{font-size:16px;width:20px;text-align:center}
+.nav-badge{margin-left:auto;background:var(--A);color:#fff;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700}
+.sb-emergency{margin:10px 12px;background:rgba(232,69,30,.15);border:1px solid rgba(232,69,30,.3);border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .2s}
+.sb-emergency:hover{background:rgba(232,69,30,.25)}
+.sb-emergency .em-num{font-size:18px;font-weight:700;color:#ff6b52;letter-spacing:.05em}
+.sb-emergency .em-lbl{font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em}
+.sb-footer{padding:14px 20px;border-top:1px solid rgba(255,255,255,.08)}
+.logout-btn{display:flex;align-items:center;gap:8px;padding:9px 14px;background:rgba(232,69,30,.12);border:1px solid rgba(232,69,30,.25);border-radius:8px;color:#ff8b72;font-size:12px;font-weight:600;cursor:pointer;width:100%;transition:all .2s}
+.logout-btn:hover{background:rgba(232,69,30,.22)}
+
+/* ─── TOPBAR ─── */
+.topbar{background:var(--sf);padding:14px 28px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar-title{font-size:15px;font-weight:700}
+.topbar-meta{font-size:11px;color:var(--tx3)}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.tb-btn{width:38px;height:38px;background:var(--bg);border:1px solid var(--bd);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;font-size:17px}
+.tb-dot{position:absolute;top:5px;right:5px;width:8px;height:8px;background:var(--A);border-radius:50%;border:2px solid var(--sf)}
+.health-passport-pill{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--G2),var(--P2));border:1px solid var(--P3);padding:6px 14px;border-radius:20px;cursor:pointer;transition:all .2s}
+.health-passport-pill:hover{box-shadow:var(--sh)}
+.hpill-dot{width:8px;height:8px;border-radius:50%;background:var(--G);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.hpill-txt{font-size:12px;font-weight:600;color:var(--P)}
+
+/* ─── CONTENT ─── */
+.content{flex:1;overflow-y:auto}
+.content-area{padding:24px 28px}
+.panel{display:none;animation:fadeUp .3s ease}
+.panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.page-hd{margin-bottom:20px}
+.page-hd h1{font-family:var(--disp);font-size:26px;color:var(--tx);line-height:1.2}
+.page-hd p{font-size:13px;color:var(--tx3);margin-top:3px}
+.breadcrumb{font-size:11px;color:var(--tx3);margin-bottom:4px}
+.breadcrumb span{color:var(--P)}
+
+/* ─── LANDING ─── */
+#land-page{background:#fff;flex-direction:column}
+.land-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 5vw;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--bd)}
+.land-logo{font-family:var(--disp);font-size:26px;color:var(--P);font-style:italic;cursor:pointer}
+.land-logo sub{font-size:11px;font-style:normal;color:var(--G);font-family:var(--font);font-weight:700;letter-spacing:.06em;vertical-align:super;margin-left:3px}
+.nav-links{display:flex;gap:28px}
+.nav-links a{font-size:13px;font-weight:600;color:var(--tx2);transition:color .2s}
+.nav-links a:hover{color:var(--P)}
+
+/* Hero */
+.hero{padding:80px 5vw 60px;background:linear-gradient(135deg,#f0f8ff 0%,#e8f7f0 40%,#f5f0ff 100%);overflow:hidden;position:relative}
+.hero-inner{display:flex;gap:60px;align-items:center;max-width:1300px;margin:0 auto}
+.hero-content{flex:1}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(13,158,110,.1);border:1px solid rgba(13,158,110,.25);color:var(--G);padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;margin-bottom:20px;text-transform:uppercase;letter-spacing:.06em}
+.hero h1{font-family:var(--disp);font-size:clamp(2.2rem,4vw,3.2rem);line-height:1.15;color:var(--tx);margin-bottom:16px}
+.hero h1 em{color:var(--P);font-style:italic}
+.hero h1 span{color:var(--G)}
+.hero-sub{color:var(--tx2);font-size:15px;max-width:500px;margin-bottom:28px;line-height:1.7}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:32px}
+.hero-stats{display:flex;gap:28px;flex-wrap:wrap}
+.hstat{text-align:center}
+.hstat-num{font-family:var(--disp);font-size:1.8rem;color:var(--P);font-weight:700}
+.hstat-lbl{font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em}
+.hero-visual{flex:1;display:flex;justify-content:center}
+.hero-mockup{width:420px;background:var(--sf);border-radius:20px;box-shadow:0 20px 60px rgba(15,92,143,.15);overflow:hidden;border:1px solid var(--bd)}
+.hm-header{background:linear-gradient(135deg,var(--P),var(--P1));padding:16px 20px;color:#fff}
+.hm-title{font-family:var(--disp);font-size:17px;font-style:italic}
+.hm-patient{display:flex;align-items:center;gap:10px;margin-top:10px}
+.hm-avatar{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+.hm-body{padding:16px}
+.hm-card{background:var(--bg);border-radius:10px;padding:12px;margin-bottom:10px;border-left:3px solid var(--P)}
+.hm-card.green{border-left-color:var(--G)}
+.hm-card.amber{border-left-color:var(--W)}
+.hm-card-lbl{font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.hm-card-val{font-size:13px;font-weight:600;margin-top:2px}
+.hm-qr{width:60px;height:60px;border-radius:8px;background:var(--P2);display:flex;align-items:center;justify-content:center;margin-left:auto;margin-top:-30px;border:2px solid var(--sf)}
+
+/* Problem Strip */
+.problem-strip{background:var(--P1);padding:40px 5vw;color:#fff}
+.prob-inner{max-width:1300px;margin:0 auto}
+.prob-title{font-family:var(--disp);font-size:1.8rem;margin-bottom:24px;font-style:italic}
+.prob-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.prob-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:16px}
+.prob-icon{font-size:28px;margin-bottom:10px}
+.prob-h{font-size:13px;font-weight:700;margin-bottom:5px;color:rgba(255,255,255,.95)}
+.prob-p{font-size:12px;color:rgba(255,255,255,.55);line-height:1.6}
+
+/* Features */
+.features{padding:70px 5vw;background:#fff}
+.section-hd{text-align:center;margin-bottom:50px}
+.section-tag{display:inline-block;background:var(--G2);color:var(--G);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:4px 14px;border-radius:20px;margin-bottom:10px}
+.section-hd h2{font-family:var(--disp);font-size:2.2rem;color:var(--tx)}
+.section-hd p{color:var(--tx2);max-width:520px;margin:8px auto 0;font-size:14px}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1300px;margin:0 auto}
+.feat-card{border:1px solid var(--bd);border-radius:var(--r);padding:24px;transition:all .3s}
+.feat-card:hover{transform:translateY(-5px);box-shadow:var(--sh2);border-color:var(--P)}
+.feat-icon{width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:14px}
+.feat-card h3{font-size:15px;font-weight:700;margin-bottom:6px}
+.feat-card p{font-size:13px;color:var(--tx2);line-height:1.65}
+.feat-tag{font-size:10px;font-weight:700;color:var(--G);text-transform:uppercase;letter-spacing:.06em;margin-top:10px}
+
+/* Footer */
+.land-footer{background:var(--tx);padding:50px 5vw 24px;color:rgba(255,255,255,.6)}
+.footer-top{display:flex;gap:50px;margin-bottom:40px;max-width:1300px}
+.footer-brand{flex:2}
+.footer-brand .logo{font-family:var(--disp);font-size:1.5rem;color:#fff;font-style:italic}
+.footer-brand p{font-size:13px;margin-top:10px;max-width:320px;line-height:1.7}
+.footer-col h4{color:#fff;font-size:13px;font-weight:700;margin-bottom:14px;text-transform:uppercase;letter-spacing:.05em}
+.footer-col a{display:block;font-size:13px;margin-bottom:8px;color:rgba(255,255,255,.55);transition:color .2s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;display:flex;justify-content:space-between;font-size:12px;max-width:1300px}
+.cameroon-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.07);border-radius:20px;padding:4px 12px;font-size:11px;color:rgba(255,255,255,.6)}
+
+/* ─── MODALS ─── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(10,20,40,.55);backdrop-filter:blur(5px);z-index:1000;align-items:center;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--sf);border-radius:20px;width:460px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.22);animation:modalIn .3s ease}
+@keyframes modalIn{from{transform:scale(.95) translateY(12px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.modal-hd{padding:24px 24px 0;display:flex;justify-content:space-between;align-items:flex-start}
+.modal-hd h2{font-family:var(--disp);font-size:22px}
+.modal-close{background:var(--bg);border:none;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.modal-body{padding:20px 24px 28px}
+.modal-wide{width:600px}
+.modal-xl{width:780px;max-width:95vw}
+.role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.role-btn{padding:12px 8px;border:1.5px solid var(--bd);border-radius:12px;background:var(--sf);cursor:pointer;text-align:center;transition:all .2s}
+.role-btn.active{border-color:var(--P);background:var(--P2)}
+.role-btn .ri{font-size:22px;display:block;margin-bottom:5px}
+.role-btn .rn{font-size:12px;font-weight:600;color:var(--tx2)}
+.role-btn.active .rn{color:var(--P)}
+.demo-box{background:var(--P2);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px}
+.demo-box strong{display:block;margin-bottom:6px;color:var(--P);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.demo-row{display:flex;justify-content:space-between;padding:2px 0;color:var(--tx2)}
+.demo-fill{color:var(--P);cursor:pointer;font-weight:700;font-size:11px}
+.demo-fill:hover{text-decoration:underline}
+.modal-tabs{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:10px;margin-bottom:18px}
+.mtab{flex:1;padding:8px;border:none;background:transparent;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;color:var(--tx2)}
+.mtab.active{background:#fff;color:var(--P);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+
+/* ─── SCAN MODAL ─── */
+.scan-zone{border:2px dashed var(--bd);border-radius:14px;padding:40px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg)}
+.scan-zone:hover,.scan-zone.drag-over{border-color:var(--P);background:var(--P2)}
+.scan-zone-icon{font-size:48px;margin-bottom:12px}
+.scan-progress{background:var(--bg);border-radius:10px;padding:16px;margin-top:14px}
+.scan-bar{height:8px;background:var(--bd);border-radius:4px;overflow:hidden;margin:8px 0}
+.scan-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--G),var(--P));border-radius:4px;transition:width .4s ease}
+.scan-result{background:var(--G2);border:1px solid var(--G);border-radius:12px;padding:16px;margin-top:14px}
+.scan-result-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(13,158,110,.15);font-size:13px}
+.scan-result-item:last-child{border:none}
+.scan-result-key{color:var(--tx2);font-weight:600}
+.scan-result-val{color:var(--tx);font-weight:500}
+
+/* ─── LIVE UPDATES ─── */
+.live-feed{display:flex;flex-direction:column;gap:10px}
+.live-item{display:flex;gap:12px;align-items:flex-start;padding:12px;background:var(--sf);border:1px solid var(--bd);border-radius:12px;transition:all .3s}
+.live-item.new-item{animation:newItem .6s ease;border-color:var(--G);background:var(--G2)}
+@keyframes newItem{0%{transform:scale(1.02);box-shadow:0 0 0 4px rgba(13,158,110,.2)}100%{transform:scale(1);box-shadow:none}}
+.live-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.live-content .live-title{font-size:13px;font-weight:700}
+.live-content .live-msg{font-size:12px;color:var(--tx2);margin-top:2px}
+.live-content .live-time{font-size:11px;color:var(--tx3);margin-top:3px}
+.live-dot{width:8px;height:8px;background:var(--G);border-radius:50%;margin-top:5px;flex-shrink:0;animation:pulse 2s infinite}
+
+/* ─── VITALS CHART ─── */
+.vitals-row{display:flex;gap:12px;flex-wrap:wrap}
+.vital-card{flex:1;min-width:140px;background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:14px;text-align:center}
+.vital-val{font-size:1.6rem;font-weight:700;font-family:var(--disp);line-height:1}
+.vital-unit{font-size:11px;color:var(--tx3);margin-top:2px}
+.vital-lbl{font-size:11px;font-weight:600;color:var(--tx2);margin-top:6px;text-transform:uppercase;letter-spacing:.05em}
+.vital-bar-wrap{height:6px;background:var(--bg2);border-radius:3px;margin-top:8px}
+.vital-bar{height:100%;border-radius:3px;transition:width .5s ease}
+
+/* ─── HEALTH PASSPORT ─── */
+.health-passport{background:linear-gradient(135deg,#0a2d4a 0%,#0f5c8f 50%,#0d9e6e 100%);border-radius:20px;padding:28px;color:#fff;position:relative;overflow:hidden;margin-bottom:20px}
+.hp-pattern{position:absolute;inset:0;opacity:.05;background:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:20px 20px}
+.hp-content{position:relative;z-index:1}
+.hp-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
+.hp-logo{font-family:var(--disp);font-size:20px;font-style:italic;opacity:.9}
+.hp-country{display:flex;align-items:center;gap:6px;font-size:12px;opacity:.7;text-transform:uppercase;letter-spacing:.08em}
+.hp-photo{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.2);border:3px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;flex-shrink:0}
+.hp-name{font-family:var(--disp);font-size:22px;font-style:italic}
+.hp-id{font-size:12px;opacity:.6;margin-top:3px;letter-spacing:.08em}
+.hp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:20px}
+.hp-item-lbl{font-size:10px;opacity:.5;text-transform:uppercase;letter-spacing:.08em}
+.hp-item-val{font-size:14px;font-weight:700;margin-top:2px}
+.hp-qr{width:70px;height:70px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px solid rgba(255,255,255,.25)}
+.hp-footer{display:flex;justify-content:space-between;align-items:center;margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,.15)}
+.hp-allergy{background:rgba(232,69,30,.2);border:1px solid rgba(232,69,30,.4);border-radius:8px;padding:6px 12px;font-size:12px}
+.hp-allergy strong{color:#ff8b72}
+
+/* ─── QR CODE ─── */
+.qr-display{background:var(--sf);border:2px solid var(--bd);border-radius:16px;padding:24px;text-align:center}
+.qr-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;width:140px;margin:0 auto 12px}
+.qr-cell{width:20px;height:20px;border-radius:2px}
+.qr-dark{background:var(--tx)}
+.qr-light{background:transparent}
+
+/* ─── TABLE ─── */
+.dtable{width:100%;border-collapse:collapse}
+.dtable th{background:var(--bg);font-size:11px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;padding:10px 14px;text-align:left}
+.dtable td{padding:12px 14px;border-bottom:1px solid var(--bd);font-size:13px}
+.dtable tr:last-child td{border-bottom:none}
+.dtable tr:hover td{background:var(--bg)}
+
+/* ─── RECORD CARDS ─── */
+.rec-card{border:1px solid var(--bd);border-radius:12px;padding:16px;margin-bottom:12px;border-left:4px solid var(--P);transition:all .2s;background:var(--sf)}
+.rec-card:hover{box-shadow:var(--sh)}
+.rec-card.rx{border-left-color:var(--G)}
+.rec-card.lab{border-left-color:var(--W)}
+.rec-card.appt{border-left-color:var(--A)}
+.rec-card.scan{border-left-color:var(--pur)}
+.rec-meta{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.rec-title{font-weight:700;font-size:14px}
+.rec-date{font-size:11px;color:var(--tx3)}
+.rec-body{font-size:13px;color:var(--tx2);line-height:1.6}
+.rec-tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.rec-source{font-size:10px;color:var(--tx3);display:flex;align-items:center;gap:4px;margin-top:6px}
+
+/* ─── APPOINTMENT ─── */
+.appt-card{display:flex;gap:14px;align-items:center;padding:14px;background:var(--bg);border-radius:12px;margin-bottom:10px;border:1px solid var(--bd)}
+.appt-date{width:56px;text-align:center;background:var(--P);color:#fff;border-radius:10px;padding:6px 0;flex-shrink:0}
+.appt-day{font-size:22px;font-weight:700;line-height:1;font-family:var(--disp)}
+.appt-month{font-size:11px;opacity:.8;font-weight:600}
+.appt-info .appt-title{font-weight:700;font-size:13px}
+.appt-info .appt-meta{font-size:12px;color:var(--tx2);margin-top:2px}
+.appt-status{margin-left:auto}
+
+/* ─── MINI CHART (BAR) ─── */
+.bar-chart{display:flex;align-items:flex-end;gap:7px;height:90px;padding-top:10px}
+.bar{flex:1;background:var(--P2);border-radius:5px 5px 0 0;position:relative;transition:all .3s;cursor:pointer}
+.bar:hover{background:var(--P)}
+.bar-lbl{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--tx3);white-space:nowrap}
+.bar-val{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;color:var(--P);white-space:nowrap;opacity:0;transition:opacity .2s}
+.bar:hover .bar-val{opacity:1}
+
+/* ─── CHAT ─── */
+.chat-fab{position:fixed;bottom:28px;right:28px;z-index:200}
+.chat-fab-btn{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--P),var(--G));border:none;color:#fff;font-size:24px;cursor:pointer;box-shadow:0 4px 20px rgba(15,92,143,.4);transition:all .3s;display:flex;align-items:center;justify-content:center}
+.chat-fab-btn:hover{transform:scale(1.1)}
+.chat-badge{position:absolute;top:0;right:0;width:18px;height:18px;background:var(--A);border-radius:50%;border:2px solid var(--sf);display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:700}
+.chat-win{position:fixed;bottom:100px;right:28px;z-index:200;width:380px;height:540px;background:var(--sf);border-radius:20px;box-shadow:0 24px 70px rgba(0,0,0,.2);display:none;flex-direction:column;overflow:hidden;border:1px solid var(--bd)}
+.chat-win.open{display:flex;animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.chat-hd{background:linear-gradient(135deg,var(--P),var(--G));color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px}
+.chat-av{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:18px}
+.chat-hd-info .cn{font-weight:700;font-size:14px}
+.chat-hd-info .cs{font-size:11px;opacity:.8;display:flex;align-items:center;gap:4px}
+.chat-close-btn{margin-left:auto;background:rgba(255,255,255,.2);border:none;color:#fff;width:28px;height:28px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.cmsg{max-width:82%}
+.cmsg.bot{align-self:flex-start}
+.cmsg.usr{align-self:flex-end}
+.cbubble{padding:9px 13px;border-radius:14px;font-size:13px;line-height:1.5}
+.cmsg.bot .cbubble{background:var(--bg);color:var(--tx);border-radius:4px 14px 14px 14px}
+.cmsg.usr .cbubble{background:linear-gradient(135deg,var(--P),var(--P1));color:#fff;border-radius:14px 14px 4px 14px}
+.cmsg-time{font-size:10px;color:var(--tx3);margin-top:3px}
+.cmsg.usr .cmsg-time{text-align:right}
+.chat-warn{background:var(--W2);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:8px 12px;font-size:11px;color:#92400e}
+.chat-sugg{display:flex;flex-wrap:wrap;gap:5px;padding:8px 14px;border-top:1px solid var(--bd)}
+.csugg{background:var(--P2);color:var(--P);border:1px solid rgba(15,92,143,.2);border-radius:20px;padding:4px 12px;font-size:11px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.csugg:hover{background:var(--P);color:#fff}
+.chat-inp{padding:10px 14px;border-top:1px solid var(--bd);display:flex;gap:8px;align-items:flex-end}
+.chat-inp textarea{flex:1;border:1.5px solid var(--bd);border-radius:10px;padding:8px 12px;font-size:13px;resize:none;max-height:80px}
+.chat-send-btn{background:linear-gradient(135deg,var(--P),var(--G));color:#fff;border:none;border-radius:9px;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.typing-ind{display:flex;gap:4px;align-items:center;padding:8px 12px}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--tx3);animation:bounce 1.2s infinite}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-7px)}}
+
+/* ─── AFRICA-SPECIFIC ─── */
+.africa-alert{background:linear-gradient(135deg,#fff7ed,#fef9ec);border:1px solid #fed7aa;border-radius:12px;padding:16px;margin-bottom:16px;display:flex;gap:12px}
+.africa-alert-icon{font-size:24px;flex-shrink:0}
+.africa-alert h4{font-size:13px;font-weight:700;color:#9a3412;margin-bottom:3px}
+.africa-alert p{font-size:12px;color:#c2410c;line-height:1.6}
+.offline-badge{display:inline-flex;align-items:center;gap:5px;background:#fef3c7;border:1px solid #fde68a;color:#92400e;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.offline-badge::before{content:'📡';font-size:12px}
+.language-pill{display:inline-flex;align-items:center;gap:5px;background:var(--pur2);color:var(--pur);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer}
+
+/* ─── PROGRESS RING ─── */
+.ring-wrap{display:inline-flex;align-items:center;justify-content:center;position:relative;width:80px;height:80px}
+.ring-svg{transform:rotate(-90deg)}
+.ring-text{position:absolute;font-size:15px;font-weight:700;font-family:var(--disp)}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--tx);color:#fff;padding:10px 20px;border-radius:12px;font-size:13px;z-index:9999;pointer-events:none;opacity:0;transition:opacity .3s;white-space:nowrap;display:flex;align-items:center;gap:8px;box-shadow:var(--sh2)}
+.toast.show{opacity:1}
+
+/* ─── LANGUAGE SELECTOR ─── */
+.lang-strip{background:var(--P1);padding:6px 5vw;display:flex;align-items:center;justify-content:space-between}
+.lang-strip-text{font-size:11px;color:rgba(255,255,255,.6)}
+.lang-btns{display:flex;gap:6px}
+.lang-btn{padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);background:transparent;transition:all .2s}
+.lang-btn.active,.lang-btn:hover{background:rgba(255,255,255,.15);color:#fff}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  .sidebar{width:60px}
+  .sb-uname,.sb-urole,.sb-section,.sb-health-score,.sb-emergency .em-lbl,.sb-logo sub{display:none}
+  .sb-logo{font-size:16px}
+  .sb-tagline{display:none}
+  .nav-item span:not(.nav-icon){display:none}
+  .nav-item{padding:10px 14px;justify-content:center}
+  .feat-grid{grid-template-columns:1fr 1fr}
+  .prob-grid{grid-template-columns:1fr 1fr}
+  .hero-inner{flex-direction:column}
+  .hero-visual{display:none}
+  .grid-4{grid-template-columns:1fr 1fr}
+}
+@media print{
+  .sidebar,.topbar,.chat-fab,.chat-win,.toast{display:none!important}
+  .content{margin:0;padding:20px}
+  .health-passport{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════════════════════
+     LANDING PAGE
+═══════════════════════════════════════ -->
+<div class="page active" id="land-page">
+
+  <!-- Language strip -->
+  <div class="lang-strip">
+    <span class="lang-strip-text">🌍 MediBook Africa — Available in:</span>
+    <div class="lang-btns">
+      <button class="lang-btn active" onclick="showToast('English selected')">English</button>
+      <button class="lang-btn" onclick="showToast('Français sélectionné')">Français</button>
+      <button class="lang-btn" onclick="showToast('Pidgin activated')">Pidgin</button>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <nav class="land-nav">
+    <div class="land-logo" onclick="goPage('land')">MediBook<sub>AFRICA</sub></div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#" onclick="goPage('about')">About</a>
+      <a href="#problems">Why Africa</a>
+      <a href="#" onclick="goPage('docs')">Docs</a>
+    </div>
+    <div class="flex gap-8">
+      <button class="btn btn-ghost" onclick="openModal('login-modal')">Login</button>
+      <button class="btn btn-P" onclick="openModal('login-modal')">Get Started →</button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge">🇨🇲 Built for Africa · Trusted by Hospitals</div>
+        <h1>Your Complete<br><em>Digital Health</em><br><span>Passport for Life</span></h1>
+        <p class="hero-sub">Scan your old hospital book. Receive doctor updates instantly. Access your entire medical history anywhere — even without strong internet. The first healthcare platform built specifically for Cameroon and Africa.</p>
+        <div class="hero-actions">
+          <button class="btn btn-P btn-lg" onclick="openModal('login-modal')">🚀 Access Your Records</button>
+          <button class="btn btn-G btn-lg" onclick="quickDemo('patient')">👁 View Live Demo</button>
+        </div>
+        <div class="hero-stats">
+          <div class="hstat"><div class="hstat-num">12,450+</div><div class="hstat-lbl">Patients</div></div>
+          <div class="hstat"><div class="hstat-num">340+</div><div class="hstat-lbl">Doctors</div></div>
+          <div class="hstat"><div class="hstat-num">8</div><div class="hstat-lbl">Hospitals</div></div>
+          <div class="hstat"><div class="hstat-num">98%</div><div class="hstat-lbl">Uptime</div></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-mockup">
+          <div class="hm-header">
+            <div class="flex items-center gap-8" style="justify-content:space-between">
+              <div class="hm-title">Health Passport</div>
+              <div style="font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.08em">🇨🇲 Cameroon</div>
+            </div>
+            <div class="hm-patient">
+              <div class="hm-avatar">JA</div>
+              <div>
+                <div style="font-weight:700;font-size:14px">John Adama</div>
+                <div style="font-size:11px;opacity:.7">PAT-2024-0047 · Blood: O+</div>
+              </div>
+              <div class="hm-qr">📱</div>
+            </div>
+          </div>
+          <div class="hm-body">
+            <div class="hm-card">
+              <div class="hm-card-lbl">Latest Diagnosis</div>
+              <div class="hm-card-val">Hypertension Stage 1</div>
+              <div style="font-size:11px;color:var(--tx3);margin-top:2px">Dr. Mbeki · Apr 15, 2025</div>
+            </div>
+            <div class="hm-card green">
+              <div class="hm-card-lbl">Active Prescription</div>
+              <div class="hm-card-val">Amlodipine 5mg · Daily</div>
+            </div>
+            <div class="hm-card amber">
+              <div class="hm-card-lbl">Next Appointment</div>
+              <div class="hm-card-val">Apr 28 · 10:00 AM · Dr. Mbeki</div>
+            </div>
+            <div style="display:flex;gap:6px;margin-top:10px">
+              <span class="badge b-green dot-green">Live Update</span>
+              <span class="badge b-blue">Malaria Free ✓</span>
+              <span class="badge b-pur">AI Checked</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem Strip -->
+  <section class="problem-strip" id="problems">
+    <div class="prob-inner">
+      <div class="prob-title">Problems We're Solving in Africa's Healthcare</div>
+      <div class="prob-grid">
+        <div class="prob-card">
+          <div class="prob-icon">📒</div>
+          <div class="prob-h">Lost Paper Books</div>
+          <div class="prob-p">Patients lose paper hospital books constantly. Years of vital medical history disappears — causing repeated tests and wrong treatments.</div>
+        </div>
+        <div class="prob-card">
+          <div class="prob-icon">🏃‍♂️</div>
+          <div class="prob-h">No Record Continuity</div>
+          <div class="prob-p">Moving between hospitals means starting from zero. No hospital shares records with another in Cameroon today.</div>
+        </div>
+        <div class="prob-card">
+          <div class="prob-icon">📡</div>
+          <div class="prob-h">Poor Internet Access</div>
+          <div class="prob-p">Rural health workers can't access cloud systems. MediBook works offline with sync when connected.</div>
+        </div>
+        <div class="prob-card">
+          <div class="prob-icon">💰</div>
+          <div class="prob-h">Duplicate Lab Tests</div>
+          <div class="prob-p">Without records, doctors order the same tests repeatedly — costing patients money they don't have.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="section-hd">
+      <span class="section-tag">What Makes MediBook Different</span>
+      <h2>Features Built for African Healthcare</h2>
+      <p>Everything a US-grade system has — plus solutions for the specific challenges Africans face daily.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-icon" style="background:#f0ebff">📷</div>
+        <h3>Scan Old Hospital Books</h3>
+        <p>Take a photo of your old paper hospital record and our AI extracts diagnoses, prescriptions, and lab results automatically — preserving your full history.</p>
+        <div class="feat-tag">🆕 Africa-First Feature</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:#e0f5ee">🔴</div>
+        <h3>Live Doctor Updates</h3>
+        <p>When your doctor prescribes drugs, adds a diagnosis, or orders a test — it appears on your app in real-time. No waiting, no phone calls, no confusion.</p>
+        <div class="feat-tag">⚡ Real-Time Sync</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:#e4f2fb">📱</div>
+        <h3>Digital Health Passport</h3>
+        <p>One scannable QR code contains your blood type, allergies, current medications, and emergency contacts. Show it to any doctor, anywhere in seconds.</p>
+        <div class="feat-tag">🌍 Works Nationwide</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:#fef3c7">📡</div>
+        <h3>Works Offline</h3>
+        <p>Rural clinics with poor internet? MediBook caches your health data locally and syncs when reconnected. Critical health info is always accessible.</p>
+        <div class="feat-tag">🏥 Rural Ready</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:#fef2f2">🤖</div>
+        <h3>African Health AI</h3>
+        <p>Ask about malaria, typhoid, sickle cell, hypertension, and other conditions common in Africa. Get answers in English, French, and Cameroonian Pidgin.</p>
+        <div class="feat-tag">🧠 Local Knowledge</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:#e0f5ee">🏥</div>
+        <h3>Multi-Hospital Support</h3>
+        <p>Your records follow you between General Hospital, Central Hospital, and any connected clinic. No more starting over when you change doctors.</p>
+        <div class="feat-tag">🔗 Connected Care</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="land-footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo">MediBook Africa</div>
+        <p>A digital health platform built to solve Africa's healthcare record challenges. Your health history, secure, accessible, and always with you.</p>
+        <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+          <span class="cameroon-badge">🇨🇲 Made for Cameroon</span>
+          <span class="cameroon-badge">🌍 Built for Africa</span>
+          <div class="offline-badge" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.5)">Works Offline</div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Patient Portal</h4>
+        <a href="#" onclick="quickDemo('patient')">Login as Patient</a>
+        <a href="#" onclick="openModal('register-modal')">Register</a>
+        <a href="#" onclick="openModal('scan-info-modal')">Scan Hospital Book</a>
+      </div>
+      <div class="footer-col">
+        <h4>Healthcare Providers</h4>
+        <a href="#" onclick="quickDemo('staff')">Staff Login</a>
+        <a href="#" onclick="quickDemo('admin')">Admin Portal</a>
+        <a href="#" onclick="goPage('docs')">API Documentation</a>
+      </div>
+      <div class="footer-col">
+        <h4>Emergency</h4>
+        <a href="#" style="color:#ff8b72">📞 SAMU: 15</a>
+        <a href="#" style="color:#ff8b72">🏥 CHU Yaoundé: 222</a>
+        <a href="#" style="color:#ff8b72">🚒 Fire: 18</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 MediBook Africa. Final Year Computer Science Project.</span>
+      <span>🔐 All data encrypted · GDPR compliant</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════════════════════════════════
+     AUTH MODALS
+═══════════════════════════════════════ -->
+<div class="overlay" id="login-modal">
+  <div class="modal">
+    <div class="modal-hd">
+      <div><div style="font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em">Welcome Back</div><h2>Sign In to MediBook</h2></div>
+      <button class="modal-close" onclick="closeModal('login-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="role-grid" style="margin-bottom:16px">
+        <div class="role-btn active" onclick="setRole('patient',this)"><span class="ri">🤒</span><span class="rn">Patient</span></div>
+        <div class="role-btn" onclick="setRole('staff',this)"><span class="ri">👨‍⚕️</span><span class="rn">Staff</span></div>
+        <div class="role-btn" onclick="setRole('admin',this)"><span class="ri">⚙️</span><span class="rn">Admin</span></div>
+      </div>
+      <div class="demo-box">
+        <strong>🎯 Demo Accounts — Click to Fill</strong>
+        <div class="demo-row"><span>patient@system.com / patient123</span><span class="demo-fill" onclick="fillCreds('patient@system.com','patient123','patient')">Fill →</span></div>
+        <div class="demo-row"><span>staff@system.com / staff123</span><span class="demo-fill" onclick="fillCreds('staff@system.com','staff123','staff')">Fill →</span></div>
+        <div class="demo-row"><span>admin@system.com / admin123</span><span class="demo-fill" onclick="fillCreds('admin@system.com','admin123','admin')">Fill →</span></div>
+      </div>
+      <div class="fgroup"><label>Email Address</label><input type="email" class="finput" id="l-email" placeholder="your@email.com"></div>
+      <div class="fgroup"><label>Password</label><input type="password" class="finput" id="l-pass" placeholder="••••••••"></div>
+      <button class="btn btn-P w-full" style="padding:12px;font-size:14px;border-radius:12px;margin-top:4px;justify-content:center" onclick="doLogin()">Sign In →</button>
+      <p style="text-align:center;margin-top:14px;font-size:12px;color:var(--tx2)">No account? <span style="color:var(--P);cursor:pointer;font-weight:700" onclick="closeModal('login-modal');openModal('register-modal')">Register as Patient</span></p>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="register-modal">
+  <div class="modal">
+    <div class="modal-hd">
+      <div><div style="font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em">New Account</div><h2>Patient Registration</h2></div>
+      <button class="modal-close" onclick="closeModal('register-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="grid-2">
+        <div class="fgroup"><label>First Name</label><input type="text" class="finput" id="r-first" placeholder="John"></div>
+        <div class="fgroup"><label>Last Name</label><input type="text" class="finput" id="r-last" placeholder="Adama"></div>
+      </div>
+      <div class="fgroup"><label>Email Address</label><input type="email" class="finput" id="r-email" placeholder="john@email.com"></div>
+      <div class="fgroup"><label>Phone (WhatsApp)</label><input type="tel" class="finput" placeholder="+237 6XX XXX XXX"></div>
+      <div class="grid-2">
+        <div class="fgroup"><label>Date of Birth</label><input type="date" class="finput"></div>
+        <div class="fgroup"><label>Gender</label><select class="finput"><option>Male</option><option>Female</option></select></div>
+      </div>
+      <div class="grid-2">
+        <div class="fgroup"><label>Blood Type</label><select class="finput"><option>Unknown</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option></select></div>
+        <div class="fgroup"><label>Region</label><select class="finput"><option>Centre</option><option>Littoral</option><option>North</option><option>South</option><option>West</option><option>Southwest</option><option>Northwest</option><option>Adamawa</option><option>East</option><option>Far North</option></select></div>
+      </div>
+      <div class="fgroup"><label>Known Allergies</label><input type="text" class="finput" placeholder="Penicillin, dust... or None"></div>
+      <div class="fgroup"><label>Password (min 8 chars)</label><input type="password" class="finput" id="r-pass" placeholder="••••••••"></div>
+      <button class="btn btn-G w-full" style="padding:12px;font-size:14px;border-radius:12px;margin-top:4px;justify-content:center" onclick="doRegister()">Create My Health Passport →</button>
+      <p style="text-align:center;margin-top:12px;font-size:12px;color:var(--tx2)">Already registered? <span style="color:var(--P);cursor:pointer;font-weight:700" onclick="closeModal('register-modal');openModal('login-modal')">Sign In</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- SCAN MODAL -->
+<div class="overlay" id="scan-modal">
+  <div class="modal modal-wide">
+    <div class="modal-hd">
+      <div><div style="font-size:11px;color:var(--pur);text-transform:uppercase;letter-spacing:.06em;font-weight:700">📷 AI-Powered</div><h2>Scan Old Hospital Book</h2></div>
+      <button class="modal-close" onclick="closeModal('scan-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="africa-alert">
+        <div class="africa-alert-icon">💡</div>
+        <div>
+          <h4>How This Works</h4>
+          <p>Take a clear photo of your old paper hospital card or book. Our AI reads the text, identifies diagnoses, prescriptions, doctor names, and dates — then saves it all to your digital record. Works with French and English books.</p>
+        </div>
+      </div>
+      <div id="scan-step-1">
+        <div class="scan-zone" id="scan-drop-zone" onclick="triggerScan()" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')">
+          <div class="scan-zone-icon">📷</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:6px">Drop photo here or tap to capture</div>
+          <div style="font-size:12px;color:var(--tx3)">Supports: JPG, PNG, PDF · Max 10MB · Works with camera</div>
+          <div style="margin-top:14px;display:flex;gap:8px;justify-content:center">
+            <button class="btn btn-P" onclick="event.stopPropagation();startScan('photo')">📷 Take Photo</button>
+            <button class="btn btn-ghost" onclick="event.stopPropagation();startScan('upload')">📁 Upload File</button>
+          </div>
+        </div>
+        <input type="file" id="scan-file-input" accept="image/*,.pdf" style="display:none" onchange="handleScanFile(this)">
+      </div>
+      <div id="scan-step-2" class="hidden">
+        <div class="scan-progress">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <span style="font-size:13px;font-weight:600" id="scan-status-txt">🔍 Analyzing image...</span>
+            <span style="font-size:13px;font-weight:700;color:var(--P)" id="scan-pct">0%</span>
+          </div>
+          <div class="scan-bar"><div class="scan-fill" id="scan-fill-bar"></div></div>
+          <div style="font-size:11px;color:var(--tx3)" id="scan-substatus">Reading text from your hospital book...</div>
+        </div>
+      </div>
+      <div id="scan-step-3" class="hidden">
+        <div class="scan-result">
+          <div style="font-size:14px;font-weight:700;color:var(--G);margin-bottom:12px;display:flex;align-items:center;gap:6px">✅ Successfully Extracted from Hospital Book</div>
+          <div class="scan-result-item"><span class="scan-result-key">Patient Name</span><span class="scan-result-val">John Kwame Adama</span></div>
+          <div class="scan-result-item"><span class="scan-result-key">Diagnosis (2022)</span><span class="scan-result-val">Malaria falciparum — Treated</span></div>
+          <div class="scan-result-item"><span class="scan-result-key">Prescription</span><span class="scan-result-val">Coartem 6 tablets, Paracetamol 500mg</span></div>
+          <div class="scan-result-item"><span class="scan-result-key">Doctor</span><span class="scan-result-val">Dr. Eto'o Marc — CHU Yaoundé</span></div>
+          <div class="scan-result-item"><span class="scan-result-key">Visit Date</span><span class="scan-result-val">14 March 2022</span></div>
+          <div class="scan-result-item"><span class="scan-result-key">Blood Pressure</span><span class="scan-result-val">128/84 mmHg</span></div>
+          <div class="scan-result-item"><span class="scan-result-key">Temperature</span><span class="scan-result-val">38.7°C (Febrile)</span></div>
+          <div class="scan-result-item"><span class="scan-result-key">Confidence Score</span><span class="scan-result-val" style="color:var(--G);font-weight:700">94% Accuracy</span></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:14px">
+          <button class="btn btn-G" style="flex:1;justify-content:center" onclick="saveScanRecord()">✅ Save to My Records</button>
+          <button class="btn btn-ghost" onclick="resetScan()">🔄 Scan Another Page</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HEALTH PASSPORT MODAL -->
+<div class="overlay" id="passport-modal">
+  <div class="modal modal-wide">
+    <div class="modal-hd">
+      <div><div style="font-size:11px;color:var(--G);text-transform:uppercase;letter-spacing:.06em;font-weight:700">Your Digital ID</div><h2>Health Passport</h2></div>
+      <button class="modal-close" onclick="closeModal('passport-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="health-passport" id="printable-passport">
+        <div class="hp-pattern"></div>
+        <div class="hp-content">
+          <div class="hp-header">
+            <div><div class="hp-logo">MediBook Africa</div><div style="font-size:11px;opacity:.5;text-transform:uppercase;letter-spacing:.1em;margin-top:3px">Digital Health Passport</div></div>
+            <div class="hp-country">🇨🇲 Cameroon</div>
+          </div>
+          <div class="flex gap-16 items-center">
+            <div class="hp-photo">JA</div>
+            <div>
+              <div class="hp-name">John Kwame Adama</div>
+              <div class="hp-id">ID: PAT-2024-0047 · DOB: 15 Mar 1991</div>
+              <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+                <span style="background:rgba(232,69,30,.25);color:#ff8b72;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700">⚠️ ALLERGY: Penicillin</span>
+                <span style="background:rgba(13,158,110,.2);color:#4ade80;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700">Blood: O+</span>
+              </div>
+            </div>
+            <div class="hp-qr" style="margin-left:auto">📱</div>
+          </div>
+          <div class="hp-grid">
+            <div><div class="hp-item-lbl">Height</div><div class="hp-item-val">178 cm</div></div>
+            <div><div class="hp-item-lbl">Weight</div><div class="hp-item-val">72 kg</div></div>
+            <div><div class="hp-item-lbl">Blood Pressure</div><div class="hp-item-val">145/95</div></div>
+            <div><div class="hp-item-lbl">Last Visit</div><div class="hp-item-val">Apr 15, 2025</div></div>
+          </div>
+          <div class="hp-footer">
+            <div>
+              <div style="font-size:10px;opacity:.5;text-transform:uppercase;letter-spacing:.08em">Current Medications</div>
+              <div style="font-size:13px;margin-top:3px">Amlodipine 5mg · Aspirin 75mg · Losartan 50mg</div>
+            </div>
+            <div>
+              <div style="font-size:10px;opacity:.5;text-transform:uppercase;letter-spacing:.08em;text-align:right">Emergency Contact</div>
+              <div style="font-size:13px;margin-top:3px">Mary Adama: +237 699 XXX XXX</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center">
+        <button class="btn btn-P" onclick="showToast('📱 QR Code shared! Show this to any doctor.')">📱 Share QR Code</button>
+        <button class="btn btn-ghost" onclick="window.print()">🖨️ Print Passport</button>
+        <button class="btn btn-G" onclick="showToast('📄 PDF downloaded!')">📥 Download PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LIVE UPDATE MODAL (Doctor triggered) -->
+<div class="overlay" id="live-update-modal">
+  <div class="modal">
+    <div class="modal-hd">
+      <div><div style="font-size:11px;color:var(--G);text-transform:uppercase;letter-spacing:.06em;font-weight:700">🔴 Live Update</div><h2>New Record from Doctor</h2></div>
+      <button class="modal-close" onclick="closeModal('live-update-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="background:var(--G2);border:1px solid var(--G);border-radius:12px;padding:16px;margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="width:40px;height:40px;border-radius:10px;background:var(--G);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff">🩺</div>
+          <div>
+            <div style="font-weight:700;font-size:14px">Dr. Emmanuel Mbeki</div>
+            <div style="font-size:12px;color:var(--tx3)">Internal Medicine · CHU Yaoundé · Just now</div>
+          </div>
+        </div>
+        <div style="font-size:13px;color:var(--tx2);background:#fff;border-radius:8px;padding:12px">
+          <strong>New Prescription Added:</strong><br>
+          Losartan 50mg — Take twice daily with food. For blood pressure management. Duration: 6 months.
+          <br><br><strong>Note from Dr. Mbeki:</strong> Blood pressure still slightly elevated. Increasing dosage. Come back in 2 weeks for monitoring.
+        </div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-G" style="flex:1;justify-content:center" onclick="closeModal('live-update-modal');showToast('✅ Update saved to your records!')">✅ Accept & Save</button>
+        <button class="btn btn-ghost" onclick="closeModal('live-update-modal')">View Later</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PATIENT DASHBOARD
+═══════════════════════════════════════ -->
+<div class="page dash" id="patient-page">
+  <aside class="sidebar">
+    <div class="sb-brand">
+      <div class="sb-logo">MediBook</div>
+      <div class="sb-tagline">Health Passport · Africa</div>
+    </div>
+    <div class="sb-user">
+      <div class="sb-avatar">JA</div>
+      <div><div class="sb-uname">John Adama</div><div class="sb-urole">PAT-2024-0047</div></div>
+    </div>
+    <div class="sb-health-score">
+      <div class="sb-health-label">Health Score</div>
+      <div class="sb-health-val">78<span style="font-size:14px;opacity:.6">/100</span></div>
+      <div class="sb-health-bar"><div class="sb-health-fill"></div></div>
+      <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:4px">Good · Updated today</div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section">Main</div>
+      <div class="nav-item active" onclick="showPanel('p-dash',this,'patient-page')"><span class="nav-icon">🏠</span><span>Dashboard</span></div>
+      <div class="nav-item" onclick="showPanel('p-passport',this,'patient-page')"><span class="nav-icon">🪪</span><span>Health Passport</span></div>
+      <div class="nav-item" onclick="openModal('scan-modal')"><span class="nav-icon">📷</span><span>Scan Hospital Book</span></div>
+      <div class="sb-section">Records</div>
+      <div class="nav-item" onclick="showPanel('p-history',this,'patient-page')"><span class="nav-icon">📋</span><span>Medical History</span></div>
+      <div class="nav-item" onclick="showPanel('p-rx',this,'patient-page')"><span class="nav-icon">💊</span><span>Prescriptions</span></div>
+      <div class="nav-item" onclick="showPanel('p-diagnoses',this,'patient-page')"><span class="nav-icon">🩺</span><span>Diagnoses</span></div>
+      <div class="nav-item" onclick="showPanel('p-lab',this,'patient-page')"><span class="nav-icon">🔬</span><span>Lab Results</span></div>
+      <div class="nav-item" onclick="showPanel('p-vitals',this,'patient-page')"><span class="nav-icon">📈</span><span>Vitals Tracker</span></div>
+      <div class="sb-section">Appointments</div>
+      <div class="nav-item" onclick="showPanel('p-appts',this,'patient-page')"><span class="nav-icon">📅</span><span>Appointments</span></div>
+      <div class="nav-item" onclick="showPanel('p-profile',this,'patient-page')"><span class="nav-icon">👤</span><span>My Profile</span></div>
+      <div class="sb-section">Updates</div>
+      <div class="nav-item" onclick="showPanel('p-feed',this,'patient-page')"><span class="nav-icon">🔴</span><span>Live Updates</span><span class="nav-badge" id="feed-badge">3</span></div>
+      <div class="nav-item" onclick="showPanel('p-notifs',this,'patient-page')"><span class="nav-icon">🔔</span><span>Notifications</span><span class="nav-badge">3</span></div>
+      <div class="nav-item" onclick="showPanel('p-download',this,'patient-page')"><span class="nav-icon">📄</span><span>Download Records</span></div>
+    </nav>
+    <div class="sb-emergency" onclick="showToast('📞 Calling SAMU: 15...')">
+      <div class="em-num">🆘 SAMU: 15</div>
+      <div class="em-lbl">Emergency Call</div>
+    </div>
+    <div class="sb-footer">
+      <button class="logout-btn" onclick="doLogout()">🚪 <span>Sign Out</span></button>
+    </div>
+  </aside>
+
+  <div class="content">
+    <div class="topbar">
+      <div>
+        <div class="topbar-meta">Patient Portal</div>
+        <div class="topbar-title" id="p-topbar-title">Dashboard Overview</div>
+      </div>
+      <div class="topbar-right">
+        <div class="offline-badge" style="display:none" id="offline-badge">Offline Mode</div>
+        <div class="health-passport-pill" onclick="openModal('passport-modal')">
+          <div class="hpill-dot"></div>
+          <span class="hpill-txt">🪪 Health Passport · PAT-2024-0047</span>
+        </div>
+        <div class="tb-btn" onclick="showPanel('p-notifs',null,'patient-page')">🔔<span class="tb-dot"></span></div>
+        <div class="tb-btn" onclick="openModal('live-update-modal')">🔴<span class="tb-dot"></span></div>
+        <div class="sb-avatar" style="width:36px;height:36px;font-size:12px;cursor:pointer" onclick="showPanel('p-profile',null,'patient-page')">JA</div>
+      </div>
+    </div>
+
+    <div class="content-area">
+
+      <!-- DASHBOARD HOME -->
+      <div class="panel active" id="p-dash">
+        <div class="page-hd">
+          <h1>Good day, John! 👋</h1>
+          <p>Your health summary · <span id="current-date"></span> · <span class="offline-badge" style="display:none;font-size:10px" id="offline-indicator">Offline</span></p>
+        </div>
+
+        <!-- Africa Health Alert -->
+        <div class="africa-alert">
+          <div class="africa-alert-icon">🦟</div>
+          <div>
+            <h4>Malaria Season Alert — Centre Region</h4>
+            <p>High rainfall this week increases mosquito activity. Sleep under treated nets, use repellent. Visit your nearest health center if you develop fever above 38°C, chills, or body aches.</p>
+          </div>
+        </div>
+
+        <div class="grid-4" style="margin-bottom:18px">
+          <div class="stat-card">
+            <div class="flex" style="justify-content:space-between;margin-bottom:10px">
+              <div class="stat-icon" style="background:var(--P2)">💊</div>
+              <span class="trend trend-up">Active</span>
+            </div>
+            <div class="stat-num">3</div>
+            <div class="stat-lbl">Prescriptions</div>
+          </div>
+          <div class="stat-card">
+            <div class="flex" style="justify-content:space-between;margin-bottom:10px">
+              <div class="stat-icon" style="background:var(--G2)">📋</div>
+              <span class="trend trend-up">+1 new</span>
+            </div>
+            <div class="stat-num">14</div>
+            <div class="stat-lbl">Total Records</div>
+          </div>
+          <div class="stat-card">
+            <div class="flex" style="justify-content:space-between;margin-bottom:10px">
+              <div class="stat-icon" style="background:var(--W2)">📅</div>
+              <span class="trend" style="background:var(--W2);color:#b45309">2 days</span>
+            </div>
+            <div class="stat-num">2</div>
+            <div class="stat-lbl">Upcoming Appts</div>
+          </div>
+          <div class="stat-card">
+            <div class="flex" style="justify-content:space-between;margin-bottom:10px">
+              <div class="stat-icon" style="background:var(--pur2)">📷</div>
+              <span class="trend trend-up">Scanned</span>
+            </div>
+            <div class="stat-num">3</div>
+            <div class="stat-lbl">Pages Scanned</div>
+          </div>
+        </div>
+
+        <!-- Vitals Quick View -->
+        <div class="card mb-2">
+          <div class="card-hd">
+            <div class="card-title">📈 Latest Vitals</div>
+            <span class="card-action" onclick="showPanel('p-vitals',null,'patient-page')">Track History →</span>
+          </div>
+          <div class="vitals-row">
+            <div class="vital-card">
+              <div class="vital-val" style="color:var(--A)">145<span style="font-size:14px">/95</span></div>
+              <div class="vital-unit">mmHg</div>
+              <div class="vital-lbl">Blood Pressure</div>
+              <div class="vital-bar-wrap"><div class="vital-bar" style="width:72%;background:var(--A)"></div></div>
+            </div>
+            <div class="vital-card">
+              <div class="vital-val" style="color:var(--G)">36.8°</div>
+              <div class="vital-unit">Celsius</div>
+              <div class="vital-lbl">Temperature</div>
+              <div class="vital-bar-wrap"><div class="vital-bar" style="width:50%;background:var(--G)"></div></div>
+            </div>
+            <div class="vital-card">
+              <div class="vital-val" style="color:var(--P)">78</div>
+              <div class="vital-unit">bpm</div>
+              <div class="vital-lbl">Heart Rate</div>
+              <div class="vital-bar-wrap"><div class="vital-bar" style="width:60%;background:var(--P)"></div></div>
+            </div>
+            <div class="vital-card">
+              <div class="vital-val" style="color:var(--G)">98</div>
+              <div class="vital-unit">%</div>
+              <div class="vital-lbl">O₂ Saturation</div>
+              <div class="vital-bar-wrap"><div class="vital-bar" style="width:98%;background:var(--G)"></div></div>
+            </div>
+            <div class="vital-card">
+              <div class="vital-val" style="color:var(--tx2)">72</div>
+              <div class="vital-unit">kg</div>
+              <div class="vital-lbl">Weight</div>
+              <div class="vital-bar-wrap"><div class="vital-bar" style="width:55%;background:var(--tx3)"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Live Updates -->
+          <div class="card">
+            <div class="card-hd">
+              <div class="card-title">🔴 Live Doctor Updates</div>
+              <span class="card-action" onclick="showPanel('p-feed',null,'patient-page')">View All →</span>
+            </div>
+            <div class="live-feed">
+              <div class="live-item new-item">
+                <div class="live-icon" style="background:var(--G2)">💊</div>
+                <div class="live-content">
+                  <div class="live-title">New Prescription — Losartan 50mg</div>
+                  <div class="live-msg">Dr. Mbeki · Twice daily · 6 months</div>
+                  <div class="live-time">5 minutes ago</div>
+                </div>
+                <div class="live-dot"></div>
+              </div>
+              <div class="live-item">
+                <div class="live-icon" style="background:var(--P2)">🩺</div>
+                <div class="live-content">
+                  <div class="live-title">Hypertension Stage 1 — Confirmed</div>
+                  <div class="live-msg">Dr. Mbeki · Apr 15, 2025</div>
+                  <div class="live-time">2 hours ago</div>
+                </div>
+              </div>
+              <div class="live-item">
+                <div class="live-icon" style="background:var(--W2)">🔬</div>
+                <div class="live-content">
+                  <div class="live-title">Lab Results: CBC — All Normal</div>
+                  <div class="live-msg">Laboratory Dept · Apr 10, 2025</div>
+                  <div class="live-time">Yesterday</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Next Appointment + Scan CTA -->
+          <div>
+            <div class="card mb-2">
+              <div class="card-hd"><div class="card-title">📅 Next Appointment</div></div>
+              <div class="appt-card" style="background:var(--P2);border-color:var(--P3)">
+                <div class="appt-date" style="background:var(--P)">
+                  <div class="appt-day">28</div>
+                  <div class="appt-month">APR</div>
+                </div>
+                <div class="appt-info">
+                  <div class="appt-title">Cardiology Follow-up</div>
+                  <div class="appt-meta">Dr. Mbeki · 10:00 AM · Room 204</div>
+                  <div style="font-size:11px;color:var(--P);margin-top:3px;font-weight:600">⏰ In 4 days</div>
+                </div>
+                <span class="badge b-blue">Confirmed</span>
+              </div>
+            </div>
+            <div class="card" style="background:linear-gradient(135deg,var(--pur2),var(--P2));border-color:rgba(124,58,237,.2);cursor:pointer" onclick="openModal('scan-modal')">
+              <div style="font-size:28px;margin-bottom:10px">📷</div>
+              <div style="font-weight:700;font-size:15px;color:var(--pur)">Scan Your Old Hospital Book</div>
+              <div style="font-size:12px;color:var(--tx2);margin-top:5px">Take a photo of your paper medical record — our AI will extract and save it to your digital history automatically.</div>
+              <button class="btn btn-pur" style="margin-top:12px">Start Scanning →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HEALTH PASSPORT -->
+      <div class="panel" id="p-passport">
+        <div class="page-hd"><div class="breadcrumb">Patient · <span>Health Passport</span></div><h1>My Health Passport</h1><p>Your universal medical ID — show this to any doctor in Cameroon.</p></div>
+        <div class="health-passport" style="margin-bottom:20px">
+          <div class="hp-pattern"></div>
+          <div class="hp-content">
+            <div class="hp-header">
+              <div><div class="hp-logo">MediBook Africa</div><div style="font-size:11px;opacity:.5;text-transform:uppercase;letter-spacing:.1em;margin-top:3px">Digital Health Passport · Republic of Cameroon</div></div>
+              <div class="hp-country">🇨🇲 Cameroun</div>
+            </div>
+            <div class="flex gap-16 items-center">
+              <div class="hp-photo">JA</div>
+              <div>
+                <div class="hp-name">John Kwame Adama</div>
+                <div class="hp-id">Passport ID: PAT-2024-0047 · Born: 15 March 1991 · Age: 34</div>
+                <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+                  <span class="hp-allergy"><strong>⚠️ ALLERGY:</strong> Penicillin</span>
+                  <span style="background:rgba(13,158,110,.2);color:#4ade80;padding:5px 12px;border-radius:8px;font-size:13px;font-weight:700">🩸 Blood: O+</span>
+                </div>
+              </div>
+              <div class="hp-qr" style="margin-left:auto">📱</div>
+            </div>
+            <div class="hp-grid">
+              <div><div class="hp-item-lbl">Height</div><div class="hp-item-val">178 cm</div></div>
+              <div><div class="hp-item-lbl">Weight</div><div class="hp-item-val">72 kg</div></div>
+              <div><div class="hp-item-lbl">BMI</div><div class="hp-item-val">22.7 ✓</div></div>
+              <div><div class="hp-item-lbl">Last BP</div><div class="hp-item-val" style="color:#ff8b72">145/95</div></div>
+              <div><div class="hp-item-lbl">Primary Doctor</div><div class="hp-item-val">Dr. E. Mbeki</div></div>
+              <div><div class="hp-item-lbl">Hospital</div><div class="hp-item-val">CHU Yaoundé</div></div>
+              <div><div class="hp-item-lbl">Insurance</div><div class="hp-item-val">CNPS #CM-890234</div></div>
+              <div><div class="hp-item-lbl">Region</div><div class="hp-item-val">Centre</div></div>
+            </div>
+            <div class="hp-footer">
+              <div>
+                <div class="hp-item-lbl">Active Medications</div>
+                <div style="font-size:13px;margin-top:3px">Amlodipine 5mg · Aspirin 75mg · Losartan 50mg</div>
+              </div>
+              <div style="text-align:right">
+                <div class="hp-item-lbl">Emergency Contact</div>
+                <div style="font-size:13px;margin-top:3px">Mary Adama: +237 699 XXX XXX</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-P" onclick="showToast('📱 QR shared! Show this at any hospital.')">📱 Share QR Code</button>
+          <button class="btn btn-G" onclick="showToast('📥 PDF downloaded!')">📥 Download PDF</button>
+          <button class="btn btn-ghost" onclick="window.print()">🖨️ Print</button>
+          <button class="btn btn-ghost" onclick="showToast('🔗 Link copied to clipboard!')">🔗 Copy Link</button>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <div class="card-hd"><div class="card-title">Chronic Conditions Summary</div></div>
+          <div class="grid-2">
+            <div class="rec-card">
+              <div class="rec-meta"><div class="rec-title">Hypertension Stage 1</div><span class="badge b-amber">Chronic</span></div>
+              <div class="rec-body">Diagnosed Apr 2025 · Dr. Mbeki · ICD-10: I10</div>
+              <div class="rec-tags"><span class="badge b-blue">Cardiology</span><span class="badge b-amber">Monitored</span></div>
+            </div>
+            <div class="rec-card rx">
+              <div class="rec-meta"><div class="rec-title">Sickle Cell Trait</div><span class="badge b-gray">Carrier</span></div>
+              <div class="rec-body">Detected 2019 · No active crisis · Regular CBC needed</div>
+              <div class="rec-tags"><span class="badge b-pur">Genetic</span><span class="badge b-green">Stable</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEDICAL HISTORY -->
+      <div class="panel" id="p-history">
+        <div class="page-hd"><div class="breadcrumb">Patient · <span>Medical History</span></div><h1>Complete Medical History</h1><p>All records including scanned hospital books and live doctor updates.</p></div>
+        <div class="flex gap-12 mb-2" style="flex-wrap:wrap">
+          <input type="text" class="finput" placeholder="🔍 Search records..." style="max-width:280px">
+          <select class="finput" style="max-width:160px"><option>All Types</option><option>Diagnoses</option><option>Prescriptions</option><option>Lab Results</option><option>Scanned Records</option></select>
+          <select class="finput" style="max-width:140px"><option>All Time</option><option>This Year</option><option>Last 3 Years</option></select>
+          <button class="btn btn-P" onclick="showPanel('p-download',null,'patient-page')">📄 Export All</button>
+          <button class="btn btn-pur" onclick="openModal('scan-modal')">📷 Scan More</button>
+        </div>
+        <!-- Scanned from old book -->
+        <div class="rec-card scan">
+          <div class="rec-meta">
+            <div class="rec-title">📷 Scanned: Malaria falciparum Episode</div>
+            <div class="rec-date">Scanned Apr 24, 2025 · Original: Mar 14, 2022</div>
+          </div>
+          <div class="rec-body">Positive RDT for Plasmodium falciparum. Fever 38.7°C. Prescribed Coartem 6 tablets + Paracetamol 500mg. Full recovery in 5 days. Treated at CHU Yaoundé.</div>
+          <div class="rec-source">📷 Source: Scanned Hospital Book (94% AI accuracy) · <span style="color:var(--pur)">Verified by AI</span></div>
+          <div class="rec-tags"><span class="badge b-pur">Scanned Record</span><span class="badge b-gray">Resolved</span><span class="badge b-teal">CHU Yaoundé</span></div>
+        </div>
+        <div class="rec-card">
+          <div class="rec-meta">
+            <div class="rec-title">🩺 Hypertension Stage 1 — New Diagnosis</div>
+            <div class="rec-date">Apr 15, 2025 · Dr. Emmanuel Mbeki</div>
+          </div>
+          <div class="rec-body">BP consistently above 130/90. ICD-10: I10. Lifestyle changes + medication. Reduce salt intake, exercise 30min/day, follow-up in 2 weeks.</div>
+          <div class="rec-source">🔴 Source: Live update from Dr. Mbeki via MediBook</div>
+          <div class="rec-tags"><span class="badge b-blue">Diagnosis</span><span class="badge b-amber">Active</span><span class="badge b-blue">Cardiology</span></div>
+        </div>
+        <div class="rec-card rx">
+          <div class="rec-meta">
+            <div class="rec-title">💊 Prescription: Amlodipine 5mg</div>
+            <div class="rec-date">Apr 15, 2025 · Dr. Mbeki · Live Update</div>
+          </div>
+          <div class="rec-body">Once daily. Blood pressure management. Duration: 90 days. Refill allowed. Take at same time daily.</div>
+          <div class="rec-source">🔴 Source: Doctor added live via MediBook</div>
+          <div class="rec-tags"><span class="badge b-green">Active Prescription</span><span class="badge b-green">Pharmacy Ready</span></div>
+        </div>
+        <div class="rec-card lab">
+          <div class="rec-meta">
+            <div class="rec-title">🔬 CBC Blood Panel — Normal</div>
+            <div class="rec-date">Apr 10, 2025 · Laboratory Dept</div>
+          </div>
+          <div class="rec-body">WBC 6.2, RBC 5.1, Hgb 14.8 g/dL, Hct 44%, Plt 230K — All within normal range. Malaria RDT: Negative.</div>
+          <div class="rec-source">🔴 Source: Lab results uploaded by Lab Technician</div>
+          <div class="rec-tags"><span class="badge b-amber">Lab Result</span><span class="badge b-green">Normal</span><span class="badge b-green">Malaria Neg ✓</span></div>
+        </div>
+        <div class="rec-card scan">
+          <div class="rec-meta">
+            <div class="rec-title">📷 Scanned: Typhoid Fever — General Hospital</div>
+            <div class="rec-date">Scanned Apr 24, 2025 · Original: Jun 8, 2019</div>
+          </div>
+          <div class="rec-body">Widal test positive. Salmonella typhi. Treated with Ciprofloxacin 500mg BD × 14 days. Recovered. General Hospital Yaoundé.</div>
+          <div class="rec-source">📷 Source: Scanned Hospital Book (89% AI accuracy)</div>
+          <div class="rec-tags"><span class="badge b-pur">Scanned Record</span><span class="badge b-gray">Resolved</span></div>
+        </div>
+      </div>
+
+      <!-- PRESCRIPTIONS -->
+      <div class="panel" id="p-rx">
+        <div class="page-hd"><div class="breadcrumb">Patient · <span>Prescriptions</span></div><h1>My Prescriptions</h1></div>
+        <div class="africa-alert" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#86efac">
+          <div class="africa-alert-icon">💊</div>
+          <div><h4 style="color:#14532d">Pharmacy Finder — Yaoundé</h4><p style="color:#166534">Your prescriptions are ready at: <strong>Pharmacie du Centre (2.1km away) · Pharmacie Bastos (0.8km)</strong>. Open until 10PM. Tap to get directions.</p></div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><div class="card-title">Active Prescriptions</div><span class="badge b-green dot-green">3 Active</span></div>
+          <table class="dtable">
+            <thead><tr><th>Medication</th><th>Dosage</th><th>Frequency</th><th>Doctor</th><th>Expires</th><th>Refills</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Amlodipine</strong></td><td>5mg</td><td>Once daily (AM)</td><td>Dr. Mbeki</td><td>Jul 15, 2025</td><td>2 left</td><td><span class="badge b-green">Active</span></td></tr>
+              <tr><td><strong>Losartan</strong></td><td>50mg</td><td>Twice daily</td><td>Dr. Mbeki</td><td>Oct 26, 2025</td><td>3 left</td><td><span class="badge b-green dot-green">New ✦</span></td></tr>
+              <tr><td><strong>Aspirin</strong></td><td>75mg</td><td>Once daily (PM)</td><td>Dr. Mbeki</td><td>Oct 15, 2025</td><td>1 left</td><td><span class="badge b-green">Active</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <div class="card-hd"><div class="card-title">Past Prescriptions</div></div>
+          <table class="dtable">
+            <thead><tr><th>Medication</th><th>Condition</th><th>Doctor</th><th>Period</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Coartem 80/480mg</td><td>Malaria</td><td>Dr. Eto'o</td><td>Mar 2022</td><td><span class="badge b-gray">Completed</span></td></tr>
+              <tr><td>Ciprofloxacin 500mg</td><td>Typhoid</td><td>Dr. Ama</td><td>Jun 2019</td><td><span class="badge b-gray">Completed</span></td></tr>
+              <tr><td>Paracetamol 1g</td><td>Fever</td><td>Dr. Eto'o</td><td>Jan 2025</td><td><span class="badge b-gray">Completed</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- DIAGNOSES -->
+      <div class="panel" id="p-diagnoses">
+        <div class="page-hd"><div class="breadcrumb">Patient · <span>Diagnoses</span></div><h1>My Diagnoses</h1></div>
+        <div class="rec-card">
+          <div class="rec-meta"><div class="rec-title">Hypertension — Stage 1 (Essential)</div><div class="rec-date">Apr 15, 2025</div></div>
+          <div class="rec-body"><strong>ICD-10:</strong> I10 · <strong>Doctor:</strong> Dr. Emmanuel Mbeki · <strong>Hospital:</strong> CHU Yaoundé<br>BP consistently ≥130/90 mmHg. Lifestyle modifications + medication initiated. Low salt diet, daily exercise, no smoking.</div>
+          <div class="rec-tags"><span class="badge b-amber">Chronic — Active</span><span class="badge b-blue">Cardiology</span><span class="badge b-green">Under Treatment</span></div>
+        </div>
+        <div class="rec-card rx">
+          <div class="rec-meta"><div class="rec-title">Sickle Cell Trait (HbAS)</div><div class="rec-date">Detected 2019</div></div>
+          <div class="rec-body"><strong>ICD-10:</strong> D57.3 · <strong>Doctor:</strong> Dr. Ndi Fouda · <strong>Hospital:</strong> General Hospital<br>Carrier, not full sickle cell disease. Regular CBC monitoring recommended. Genetic counseling provided.</div>
+          <div class="rec-tags"><span class="badge b-pur">Genetic</span><span class="badge b-gray">Carrier — Stable</span></div>
+        </div>
+        <div class="rec-card" style="border-left-color:var(--tx3)">
+          <div class="rec-meta"><div class="rec-title">📷 Malaria — P. falciparum (Scanned)</div><div class="rec-date">Mar 14, 2022 · Scanned Apr 2025</div></div>
+          <div class="rec-body"><strong>ICD-10:</strong> B50.9 · <strong>Doctor:</strong> Dr. Marc Eto'o · <strong>Source:</strong> Scanned hospital book<br>Positive RDT. Treated with Coartem AL. Full recovery confirmed.</div>
+          <div class="rec-tags"><span class="badge b-pur">Scanned</span><span class="badge b-gray">Resolved</span><span class="badge b-teal">Infectious</span></div>
+        </div>
+        <div class="rec-card" style="border-left-color:var(--tx3)">
+          <div class="rec-meta"><div class="rec-title">📷 Typhoid Fever (Scanned)</div><div class="rec-date">Jun 8, 2019 · Scanned Apr 2025</div></div>
+          <div class="rec-body"><strong>ICD-10:</strong> A01.0 · Widal test positive. Ciprofloxacin 14 days. Full recovery.</div>
+          <div class="rec-tags"><span class="badge b-pur">Scanned</span><span class="badge b-gray">Resolved</span></div>
+        </div>
+      </div>
+
+      <!-- LAB RESULTS -->
+      <div class="panel" id="p-lab">
+        <div class="page-hd"><div class="breadcrumb">Patient · <span>Lab Results</span></div><h1>Laboratory Results</h1></div>
+        <div class="card mb-2">
+          <div class="card-hd"><div class="card-title">🔬 CBC Blood Panel — Apr 10, 2025</div><span class="badge b-green">All Normal</span></div>
+          <table class="dtable">
+            <thead><tr><th>Test</th><th>Your Result</th><th>Normal Range</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>White Blood Cells (WBC)</td><td>6.2 ×10³/μL</td><td>4.5–11.0</td><td><span class="badge b-green">✓ Normal</span></td></tr>
+              <tr><td>Red Blood Cells (RBC)</td><td>5.1 ×10⁶/μL</td><td>4.5–5.5</td><td><span class="badge b-green">✓ Normal</span></td></tr>
+              <tr><td>Hemoglobin</td><td>14.8 g/dL</td><td>13.5–17.5</td><td><span class="badge b-green">✓ Normal</span></td></tr>
+              <tr><td>Hematocrit</td><td>44%</td><td>41–53%</td><td><span class="badge b-green">✓ Normal</span></td></tr>
+              <tr><td>Platelets</td><td>230,000 /μL</td><td>150–400K</td><td><span class="badge b-green">✓ Normal</span></td></tr>
+              <tr><td>Malaria RDT</td><td>Negative</td><td>Negative</td><td><span class="badge b-green">✓ Negative</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card mb-2">
+          <div class="card-hd"><div class="card-title">🩸 Lipid Panel — Dec 5, 2024</div><span class="badge b-amber">Monitor LDL</span></div>
+          <table class="dtable">
+            <thead><tr><th>Test</th><th>Result</th><th>Optimal</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Total Cholesterol</td><td>195 mg/dL</td><td>&lt;200</td><td><span class="badge b-green">✓ Normal</span></td></tr>
+              <tr><td>LDL Cholesterol</td><td>128 mg/dL</td><td>&lt;100</td><td><span class="badge b-amber">⚠ Borderline</span></td></tr>
+              <tr><td>HDL Cholesterol</td><td>48 mg/dL</td><td>&gt;60</td><td><span class="badge b-red">↓ Low</span></td></tr>
+              <tr><td>Triglycerides</td><td>145 mg/dL</td><td>&lt;150</td><td><span class="badge b-green">✓ Normal</span></td></tr>
+              <tr><td>Blood Glucose (fasting)</td><td>92 mg/dL</td><td>70–100</td><td><span class="badge b-green">✓ Normal</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- VITALS TRACKER -->
+      <div class="panel" id="p-vitals">
+        <div class="page-hd"><div class="breadcrumb">Patient · <span>Vitals</span></div><h1>Vitals Tracker</h1><p>Track your health trends over time. Enter readings from your home monitor.</p></div>
+        <div class="card mb-2">
+          <div class="card-hd"><div class="card-title">📈 Blood Pressure History (Last 6 Weeks)</div><button class="btn btn-P btn-sm" onclick="addVital()">+ Add Reading</button></div>
+          <div class="bar-chart" style="height:110px;margin-bottom:30px">
+            <div class="bar" style="height:68%"><span class="bar-lbl">Mar 10</span><span class="bar-val">142/90</span></div>
+            <div class="bar" style="height:72%"><span class="bar-lbl">Mar 17</span><span class="bar-val">148/95</span></div>
+            <div class="bar" style="height:75%"><span class="bar-lbl">Mar 24</span><span class="bar-val">150/96</span></div>
+            <div class="bar" style="height:70%"><span class="bar-lbl">Apr 1</span><span class="bar-val">145/92</span></div>
+            <div class="bar" style="height:72%"><span class="bar-lbl">Apr 8</span><span class="bar-val">147/94</span></div>
+            <div class="bar" style="height:72%;background:var(--A2);border:1.5px solid var(--A)"><span class="bar-lbl" style="color:var(--A)">Apr 15</span><span class="bar-val" style="color:var(--A)">145/95</span></div>
+          </div>
+          <div style="font-size:12px;color:var(--tx3);text-align:center">Target: Below 130/80 mmHg · Currently above target — keep taking medication</div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-hd"><div class="card-title">Log New Vital</div></div>
+            <div class="fgroup"><label>Vital Type</label><select class="finput"><option>Blood Pressure</option><option>Temperature</option><option>Weight</option><option>Blood Sugar</option><option>Heart Rate</option></select></div>
+            <div class="grid-2">
+              <div class="fgroup"><label>Value 1 (Systolic/Main)</label><input type="number" class="finput" placeholder="145"></div>
+              <div class="fgroup"><label>Value 2 (Diastolic)</label><input type="number" class="finput" placeholder="95"></div>
+            </div>
+            <div class="fgroup"><label>Date & Time</label><input type="datetime-local" class="finput"></div>
+            <div class="fgroup"><label>Note (optional)</label><input type="text" class="finput" placeholder="After medication, feeling..."></div>
+            <button class="btn btn-G w-full" style="justify-content:center" onclick="showToast('✅ Vital recorded and shared with Dr. Mbeki!')">Save Reading</button>
+          </div>
+          <div class="card">
+            <div class="card-hd"><div class="card-title">Recent Readings</div></div>
+            <table class="dtable">
+              <thead><tr><th>Date</th><th>BP</th><th>Temp</th><th>HR</th></tr></thead>
+              <tbody>
+                <tr><td>Apr 24</td><td style="color:var(--A)">145/95</td><td style="color:var(--G)">36.8°</td><td>78</td></tr>
+                <tr><td>Apr 20</td><td style="color:var(--A)">147/94</td><td style="color:var(--G)">36.5°</td><td>82</td></tr>
+                <tr><td>Apr 15</td><td style="color:var(--A)">145/92</td><td style="color:var(--G)">36.9°</td><td>80</td></tr>
+                <tr><td>Apr 8</td><td style="color:var(--A)">150/96</td><td style="color:var(--G)">37.0°</td><td>84</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- APPOINTMENTS -->
+      <div class="panel" id="p-appts">
+        <div class="page-hd"><div class="breadcrumb">Patient · <span>Appointments</span></div><h1>My Appointments</h1></div>
+        <div class="card mb-2">
+          <div class="card-hd"><div class="card-title">Upcoming</div></div>
+          <div class="appt-card" style="background:var(--P2);border-color:var(--P3)">
+            <div class="appt-date"><div class="appt-day">28</div><div class="appt-month">APR</div></div>
+            <div class="appt-info">
+              <div class="appt-title">Cardiology Follow-up</div>
+              <div class="appt-meta">Dr. Emmanuel Mbeki · 10:00 AM · Room 204 · CHU Yaoundé</div>
+              <div style="font-size:11px;color:var(--P);margin-top:3px">📋 Bring: Previous prescription, BP log, ID card</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <span class="badge b-blue">Confirmed</span>
+              <button class="btn btn-ghost btn-sm" onclick="showToast('📍 Directions opened in maps app')">📍 Directions</button>
+            </div>
+          </div>
+          <div class="appt-card">
+            <div class="appt-date" style="background:var(--G)"><div class="appt-day">05</div><div class="appt-month">MAY</div></div>
+            <div class="appt-info">
+              <div class="appt-title">Blood Pressure Monitoring</div>
+              <div class="appt-meta">Nurse Station A · 8:30 AM</div>
+            </div>
+            <span class="badge b-amber">Pending</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><div class="card-title">Past Appointments</div></div>
+          <table class="dtable">
+            <thead><tr><th>Date</th><th>Type</th><th>Doctor / Staff</th><th>Hospital</th><th>Records Added</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Apr 15, 2025</td><td>Consultation</td><td>Dr. Mbeki</td><td>CHU Yaoundé</td><td><span class="badge b-green">2 records</span></td><td><span class="badge b-green">Done</span></td></tr>
+              <tr><td>Jan 22, 2025</td><td>Emergency</td><td>Dr. Eto'o</td><td>CHU Yaoundé</td><td><span class="badge b-green">3 records</span></td><td><span class="badge b-green">Done</span></td></tr>
+              <tr><td>Dec 5, 2024</td><td>Lab Work</td><td>Lab Tech</td><td>CHU Yaoundé</td><td><span class="badge b-amber">1 lab result</span></td><td><span class="badge b-green">Done</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PROFILE -->
+      <div class="panel" id="p-profile">
+        <div class="page-hd"><div class="breadcrumb">Patient · <span>My Profile</span></div><h1>My Profile</h1></div>
+        <div class="health-passport" style="margin-bottom:20px;padding:20px">
+          <div class="hp-pattern"></div>
+          <div class="hp-content flex gap-16 items-center">
+            <div class="hp-photo">JA</div>
+            <div>
+              <div class="hp-name">John Kwame Adama</div>
+              <div style="font-size:12px;opacity:.6;margin-top:3px">PAT-2024-0047 · Registered Jan 10, 2024</div>
+              <div style="margin-top:8px;display:flex;gap:6px">
+                <span style="background:rgba(255,255,255,.15);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700">O+ Blood</span>
+                <span style="background:rgba(255,255,255,.15);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700">Age 34</span>
+                <span style="background:rgba(255,255,255,.15);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700">Male</span>
+              </div>
+            </div>
+            <div style="margin-left:auto;display:flex;gap:8px;flex-direction:column">
+              <button class="btn btn-ghost" style="background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.2)" onclick="showToast('Edit mode enabled!')">✏️ Edit</button>
+              <button class="btn btn-ghost" style="background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.2)" onclick="showToast('Camera opened!')">📷 Photo</button>
+            </div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-hd"><div class="card-title">Personal Information</div><span class="card-action" onclick="showToast('Edit mode activated')">Edit</span></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div><div style="font-size:11px;color:var(--tx3);font-weight:700;text-transform:uppercase;letter-spacing:.04em">Full Name</div><div style="font-size:13px;font-weight:600;margin-top:2px">John Kwame Adama</div></div>
+              <div><div style="font-size:11px;color:var(--tx3);font-weight:700;text-transform:uppercase;letter-spacing:.04em">Date of Birth</div><div style="font-size:13px;font-weight:600;margin-top:2px">March 15, 1991</div></div>
+              <div><div style="font-size:11px;color:var(--tx3);font-weight:700;text-transform:uppercase;letter-spacing:.04em">Phone (WhatsApp)</div><div style="font-size:13px;font-weight:600;margin-top:2px">+237 672 345 678</div></div>
+              <div><div style="font-size:11px;color:var(--tx3);font-weight:700;text-transform:uppercase;letter-spacing:.04em">Email</div><div style="font-size:13px;font-weight:600;margin-top:2px">patient@system.com</div></div>
+              <div><div style="font-size:11px;color:var(--tx3);font-weight:700;text-transform:uppercase;letter-spacing:.04em">Region</div><div style="font-size:13px;font-weight:600;margin-top:2px">Centre — Yaoundé</div></div>
+              <div><div style="font-size:11px;color:var(--tx3);font-weight:700;text-transform:uppercase;letter-spacing:.04em">Nationality</div><div style="font-size:13px;font-weight:600;margin-top:2px">Cameroonian</div></div>
+              <div style="grid-column:1/-1"><div style="font-size:11px;color:var(--tx3);font-weight:700;text-transform:uppercase;letter-spacing:.04em">Emergency Contact</div><div style="font-size:13px;font-weight:600;margin-top:2px">Mary Adama (Wife) · +237 699 XXX XXX</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><div class="card-title">Medical Information</div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div><div style="font-size:11px;color:var(--tx3);font-weight:700;text-transform:uppercase;letter-spacing:.04em">Blood Type</div><div style="font-size:16px;font-weight:800;color:var(--A);margin-top:2px">O+</div></div>
+              <div><div style="font-size:11px;color:var(--tx3);font-weight:700;text-transform:uppercase;letter-spacing:.04em">BMI</div><div style="font-size:16px;font-weight:800;color:var(--G);margin-top:2px">22.7</div></div>
+              <div><div style="font-size:11px;color:var(--tx3);font-weight:700;text-transform:uppercase;letter-spacing:.04em">Height</div><div style="font-size:13px;font-weight:600;margin-top:2px">178 cm</div></div>
+              <div><div style="font-size:11px;color:var(--tx3);font-weight:700;text-transform:uppercase;letter-spacing:.04em">Weight</div><div style="font-size:13px;font-weight:600;margin-top:2px">72 kg</div></div>
+              <div style="grid-column:1/-1"><div style="font-size:11px;color:var(--tx3);font-weight:700;text-transform:uppercase;letter-spacing:.04em">Allergies</div><div style="background:var(--A2);border-radius:8px;padding:8px 10px;margin-top:4px;font-size:12px;color:var(--A);font-weight:700">⚠️ Penicillin — Severe reaction · Dust mites — Mild</div></div>
+              <div style="grid-column:1/-1"><div style="font-size:11px;color:var(--tx3);font-weight:700;text-transform:uppercase;letter-spacing:.04em">Insurance</div><div style="font-size:13px;font-weight:600;margin-top:2px">CNPS · #CM-890234 · Valid until Dec 2025</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIVE FEED -->
+      <div class="panel" id="p-feed">
+        <div class="page-hd"><div class="breadcrumb">Patient · <span>Live Updates</span></div><h1>Live Doctor Updates</h1><p>Real-time updates from your healthcare providers — added directly to your record.</p></div>
+        <div class="africa-alert">
+          <div class="africa-alert-icon">🔴</div>
+          <div><h4>How Live Updates Work</h4><p>When Dr. Mbeki adds a prescription or diagnosis during your visit — it appears here instantly. No phone calls needed. Your record is always current.</p></div>
+        </div>
+        <div class="live-feed">
+          <div class="live-item new-item">
+            <div class="live-icon" style="background:var(--G2)">💊</div>
+            <div class="live-content" style="flex:1">
+              <div class="live-title">New Prescription Added — Losartan 50mg</div>
+              <div class="live-msg">Dr. Emmanuel Mbeki · Internal Medicine · CHU Yaoundé<br>Twice daily for 6 months. For blood pressure control.</div>
+              <div class="live-time">🔴 Live · 5 minutes ago</div>
+            </div>
+            <div class="live-dot"></div>
+          </div>
+          <div class="live-item new-item">
+            <div class="live-icon" style="background:var(--P2)">🩺</div>
+            <div class="live-content" style="flex:1">
+              <div class="live-title">Diagnosis Confirmed — Hypertension Stage 1</div>
+              <div class="live-msg">Dr. Emmanuel Mbeki · ICD-10: I10 · Lifestyle changes + medication initiated.</div>
+              <div class="live-time">🔴 Live · 2 hours ago</div>
+            </div>
+            <div class="live-dot"></div>
+          </div>
+          <div class="live-item new-item">
+            <div class="live-icon" style="background:var(--W2)">🔬</div>
+            <div class="live-content" style="flex:1">
+              <div class="live-title">Lab Results Uploaded — CBC Panel</div>
+              <div class="live-msg">Laboratory Department · All results normal. Malaria RDT: Negative. Malaria season reminder attached.</div>
+              <div class="live-time">🔴 Live · Apr 10, 2025</div>
+            </div>
+            <div class="live-dot"></div>
+          </div>
+          <div class="live-item">
+            <div class="live-icon" style="background:var(--G2)">📅</div>
+            <div class="live-content" style="flex:1">
+              <div class="live-title">Appointment Scheduled</div>
+              <div class="live-msg">Dr. Mbeki scheduled: Cardiology follow-up · Apr 28, 2025 · 10:00 AM · Room 204</div>
+              <div class="live-time">Apr 14, 2025</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:16px;text-align:center">
+          <button class="btn btn-P" onclick="simulateLiveUpdate()">🔴 Simulate Live Doctor Update</button>
+        </div>
+      </div>
+
+      <!-- NOTIFICATIONS -->
+      <div class="panel" id="p-notifs">
+        <div class="page-hd"><div class="breadcrumb">Patient · <span>Notifications</span></div><h1>Notifications</h1></div>
+        <div class="card">
+          <div class="card-hd"><div class="card-title">All Notifications (7)</div><span class="card-action" onclick="showToast('All marked as read')">Mark all read</span></div>
+          <div style="display:flex;flex-direction:column">
+            <div class="live-item new-item">
+              <div class="live-icon" style="background:var(--G2)">💊</div>
+              <div class="live-content" style="flex:1"><div class="live-title">New Prescription: Losartan 50mg</div><div class="live-msg">Dr. Mbeki added a new prescription. Collect at pharmacy.</div><div class="live-time">5 minutes ago</div></div>
+              <div class="live-dot"></div>
+            </div>
+            <div class="live-item new-item">
+              <div class="live-icon" style="background:var(--W2)">🦟</div>
+              <div class="live-content" style="flex:1"><div class="live-title">Malaria Season Alert — Centre Region</div><div class="live-msg">High risk period. Sleep under treated nets. Know the symptoms: fever, chills, headache.</div><div class="live-time">Today, 7:00 AM</div></div>
+              <div class="live-dot"></div>
+            </div>
+            <div class="live-item new-item">
+              <div class="live-icon" style="background:var(--P2)">📅</div>
+              <div class="live-content" style="flex:1"><div class="live-title">Appointment Reminder</div><div class="live-msg">Your cardiology follow-up is in 4 days — Apr 28 at 10:00 AM.</div><div class="live-time">Yesterday</div></div>
+              <div class="live-dot"></div>
+            </div>
+            <div class="live-item">
+              <div class="live-icon" style="background:var(--G2)">🔬</div>
+              <div class="live-content" style="flex:1"><div class="live-title">Lab Results Ready</div><div class="live-msg">Your CBC panel results are available. All normal.</div><div class="live-time">Apr 10, 2025</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOWNLOAD -->
+      <div class="panel" id="p-download">
+        <div class="page-hd"><div class="breadcrumb">Patient · <span>Download</span></div><h1>Download My Records</h1></div>
+        <div class="card mb-2">
+          <div style="text-align:center;padding:20px">
+            <div style="font-size:52px;margin-bottom:12px">📄</div>
+            <div style="font-size:18px;font-weight:700;margin-bottom:6px">Complete Medical Record — John Adama</div>
+            <div style="font-size:13px;color:var(--tx3);margin-bottom:20px">Includes: Profile · Diagnoses · Prescriptions · Lab Results · Appointments · Scanned Records<br>Generated: April 24, 2025 · PAT-2024-0047</div>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+              <button class="btn btn-P btn-lg" onclick="showToast('📄 Full PDF downloading...')">📥 Download Full PDF</button>
+              <button class="btn btn-G btn-lg" onclick="openModal('passport-modal')">🪪 Health Passport PDF</button>
+              <button class="btn btn-ghost btn-lg" onclick="window.print()">🖨️ Print Records</button>
+            </div>
+          </div>
+        </div>
+        <div class="grid-3" style="gap:10px">
+          <button class="btn btn-ghost w-full" style="justify-content:center" onclick="showToast('Diagnoses PDF downloading...')">🩺 Diagnoses Only</button>
+          <button class="btn btn-ghost w-full" style="justify-content:center" onclick="showToast('Prescriptions PDF downloading...')">💊 Prescriptions Only</button>
+          <button class="btn btn-ghost w-full" style="justify-content:center" onclick="showToast('Lab Results PDF downloading...')">🔬 Lab Results Only</button>
+          <button class="btn btn-ghost w-full" style="justify-content:center" onclick="showToast('Scanned Records PDF downloading...')">📷 Scanned Records Only</button>
+          <button class="btn btn-ghost w-full" style="justify-content:center" onclick="showToast('Appointments PDF downloading...')">📅 Appointments Only</button>
+          <button class="btn btn-pur w-full" style="justify-content:center" onclick="showToast('Sharing with hospital...')">🏥 Share with Hospital</button>
+        </div>
+      </div>
+
+    </div><!-- end content-area -->
+  </div><!-- end content -->
+
+  <!-- AI CHATBOT -->
+  <div class="chat-fab">
+    <div class="chat-win" id="chat-win">
+      <div class="chat-hd">
+        <div class="chat-av">🤖</div>
+        <div class="chat-hd-info">
+          <div class="cn">MediAI Africa</div>
+          <div class="cs"><span style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;margin-right:3px;animation:pulse 2s infinite"></span>Online · Speaks EN/FR/Pidgin</div>
+        </div>
+        <button class="chat-close-btn" onclick="toggleChat()">✕</button>
+      </div>
+      <div class="chat-msgs" id="chat-msgs">
+        <div class="cmsg bot">
+          <div class="cbubble">Hello John! 👋 I'm MediAI Africa. I can answer health questions in English, French, or Pidgin. I know about diseases common in Cameroon like malaria, typhoid, and hypertension. How can I help you today?</div>
+          <div class="cmsg-time">Now</div>
+        </div>
+        <div class="chat-warn">⚠️ <strong>Important:</strong> MediAI gives educational information only. For emergencies call SAMU: 15 or visit the nearest hospital.</div>
+      </div>
+      <div class="chat-sugg">
+        <span class="csugg" onclick="chatSend('What are malaria symptoms?')">Malaria symptoms?</span>
+        <span class="csugg" onclick="chatSend('Comment réduire la fièvre?')">Fièvre en français?</span>
+        <span class="csugg" onclick="chatSend('High blood pressure tips')">BP tips?</span>
+        <span class="csugg" onclick="chatSend('Sickle cell disease advice')">Sickle cell?</span>
+        <span class="csugg" onclick="chatSend('Typhoid prevention in Cameroon')">Typhoid?</span>
+        <span class="csugg" onclick="chatSend('Nearest hospital to Yaoundé Centre')">Find hospital</span>
+      </div>
+      <div class="chat-inp">
+        <textarea id="chat-textarea" placeholder="Ask a health question..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();chatSend()}"></textarea>
+        <button class="chat-send-btn" onclick="chatSend()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+    <button class="chat-fab-btn" onclick="toggleChat()" title="MediAI Africa Assistant">🤖</button>
+    <span class="chat-badge">AI</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     STAFF DASHBOARD
+═══════════════════════════════════════ -->
+<div class="page dash" id="staff-page">
+  <aside class="sidebar" style="background:linear-gradient(175deg,#0a3d2e 0%,#0a2d20 100%)">
+    <div class="sb-brand"><div class="sb-logo">MediBook</div><div class="sb-tagline">Staff Portal · Africa</div></div>
+    <div class="sb-user">
+      <div class="sb-avatar" style="background:var(--P)">DM</div>
+      <div><div class="sb-uname">Dr. E. Mbeki</div><div class="sb-urole">Internal Medicine</div></div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section">Main</div>
+      <div class="nav-item active" onclick="showPanel('s-dash',this,'staff-page')"><span class="nav-icon">🏠</span><span>Dashboard</span></div>
+      <div class="nav-item" onclick="showPanel('s-search',this,'staff-page')"><span class="nav-icon">🔍</span><span>Search Patient</span></div>
+      <div class="sb-section">Add Records</div>
+      <div class="nav-item" onclick="showPanel('s-diag',this,'staff-page')"><span class="nav-icon">🩺</span><span>Add Diagnosis</span></div>
+      <div class="nav-item" onclick="showPanel('s-rx',this,'staff-page')"><span class="nav-icon">💊</span><span>Add Prescription</span></div>
+      <div class="nav-item" onclick="showPanel('s-lab',this,'staff-page')"><span class="nav-icon">🔬</span><span>Add Lab Results</span></div>
+      <div class="nav-item" onclick="showPanel('s-vital',this,'staff-page')"><span class="nav-icon">📈</span><span>Record Vitals</span></div>
+      <div class="nav-item" onclick="showPanel('s-appt',this,'staff-page')"><span class="nav-icon">📅</span><span>Schedule Appt</span></div>
+      <div class="sb-section">Communication</div>
+      <div class="nav-item" onclick="showPanel('s-notify',this,'staff-page')"><span class="nav-icon">📢</span><span>Send Notification</span></div>
+    </nav>
+    <div class="sb-emergency" onclick="showToast('Emergency protocol activated!')">
+      <div class="em-num">🆘 Emergency</div>
+      <div class="em-lbl">Hospital Protocol</div>
+    </div>
+    <div class="sb-footer"><button class="logout-btn" onclick="doLogout()">🚪 <span>Sign Out</span></button></div>
+  </aside>
+  <div class="content">
+    <div class="topbar">
+      <div><div class="topbar-meta">Staff Portal · CHU Yaoundé</div><div class="topbar-title">Dr. Emmanuel Mbeki — Internal Medicine</div></div>
+      <div class="topbar-right">
+        <span class="badge b-green dot-green">On Duty</span>
+        <div class="sb-avatar" style="width:36px;height:36px;font-size:12px;background:var(--P)">DM</div>
+      </div>
+    </div>
+    <div class="content-area">
+
+      <div class="panel active" id="s-dash">
+        <div class="page-hd"><h1>Staff Dashboard</h1><p>Today's patient management — April 24, 2025</p></div>
+        <div class="grid-4 mb-2">
+          <div class="stat-card"><div class="flex" style="justify-content:space-between;margin-bottom:10px"><div class="stat-icon" style="background:var(--G2)">👥</div><span class="trend trend-up">+3 today</span></div><div class="stat-num">47</div><div class="stat-lbl">Patients Today</div></div>
+          <div class="stat-card"><div class="flex" style="justify-content:space-between;margin-bottom:10px"><div class="stat-icon" style="background:var(--P2)">📋</div></div><div class="stat-num">128</div><div class="stat-lbl">Records This Week</div></div>
+          <div class="stat-card"><div class="flex" style="justify-content:space-between;margin-bottom:10px"><div class="stat-icon" style="background:var(--W2)">📅</div></div><div class="stat-num">8</div><div class="stat-lbl">Today's Appointments</div></div>
+          <div class="stat-card"><div class="flex" style="justify-content:space-between;margin-bottom:10px"><div class="stat-icon" style="background:var(--pur2)">📢</div></div><div class="stat-num">5</div><div class="stat-lbl">Notifications Sent</div></div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-hd"><div class="card-title">Today's Appointments</div></div>
+            <table class="dtable">
+              <thead><tr><th>Time</th><th>Patient</th><th>Type</th><th>Records</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>08:00</td><td><strong>Alice Biya</strong></td><td>Checkup</td><td><span class="badge b-green">3 added</span></td><td><span class="badge b-green">Done</span></td></tr>
+                <tr><td>09:30</td><td><strong>Robert Fouda</strong></td><td>Follow-up</td><td><span class="badge b-green">2 added</span></td><td><span class="badge b-green">Done</span></td></tr>
+                <tr><td>10:00</td><td><strong>John Adama</strong></td><td>Cardiology</td><td><span class="badge b-pur">1 pending</span></td><td><span class="badge b-amber">Now</span></td></tr>
+                <tr><td>11:00</td><td><strong>Grace Nkomo</strong></td><td>Consultation</td><td>—</td><td><span class="badge b-gray">Waiting</span></td></tr>
+                <tr><td>14:00</td><td><strong>Paul Essono</strong></td><td>Lab Review</td><td>—</td><td><span class="badge b-gray">Scheduled</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <div class="card-hd"><div class="card-title">Quick Actions</div></div>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <button class="btn btn-P w-full" style="justify-content:center" onclick="showPanel('s-search',null,'staff-page')">🔍 Search Patient by ID / Name</button>
+              <button class="btn btn-G w-full" style="justify-content:center" onclick="showPanel('s-diag',null,'staff-page')">🩺 Add Diagnosis (Live Update)</button>
+              <button class="btn btn-ghost w-full" style="justify-content:center" onclick="showPanel('s-rx',null,'staff-page')">💊 Prescribe Medication</button>
+              <button class="btn btn-ghost w-full" style="justify-content:center" onclick="showPanel('s-lab',null,'staff-page')">🔬 Upload Lab Results</button>
+              <button class="btn btn-ghost w-full" style="justify-content:center" onclick="showPanel('s-vital',null,'staff-page')">📈 Record Patient Vitals</button>
+              <button class="btn btn-ghost w-full" style="justify-content:center" onclick="showPanel('s-notify',null,'staff-page')">📢 Send Patient Notification</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="s-search">
+        <div class="page-hd"><h1>Search Patient</h1></div>
+        <div class="card mb-2">
+          <div class="flex gap-12 mb-2">
+            <input type="text" id="search-inp" class="finput" placeholder="Enter name, ID, phone or QR code..." style="flex:1">
+            <button class="btn btn-P" onclick="doSearch()">Search</button>
+            <button class="btn btn-ghost" onclick="showToast('📷 QR scanner activated!')">📷 Scan QR</button>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-ghost btn-sm" onclick="doSearch()">By Name</button>
+            <button class="btn btn-ghost btn-sm" onclick="doSearch()">By ID</button>
+            <button class="btn btn-ghost btn-sm" onclick="doSearch()">By Phone</button>
+            <button class="btn btn-ghost btn-sm" onclick="doSearch()">By NIC Number</button>
+          </div>
+        </div>
+        <div id="search-result" class="hidden card">
+          <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:16px">
+            <div style="width:64px;height:64px;border-radius:50%;background:var(--P);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:700;flex-shrink:0">JA</div>
+            <div style="flex:1">
+              <div style="font-weight:800;font-size:18px">John Kwame Adama</div>
+              <div style="color:var(--tx3);font-size:13px">PAT-2024-0047 · Male · Age 34 · Blood Type: O+ · Yaoundé, Centre</div>
+              <div style="font-size:12px;color:var(--tx3);margin-top:3px">📞 +237 672 345 678 · ✉️ patient@system.com</div>
+              <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+                <span class="badge b-red">⚠️ Allergy: Penicillin</span>
+                <span class="badge b-amber">Hypertension Stage 1</span>
+                <span class="badge b-pur">Sickle Cell Trait</span>
+                <span class="badge b-blue">Active Patient</span>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <button class="btn btn-G btn-sm" onclick="showPanel('s-diag',null,'staff-page');showToast('John Adama pre-filled')">🩺 Add Diagnosis</button>
+              <button class="btn btn-P btn-sm" onclick="showPanel('s-rx',null,'staff-page');showToast('John Adama pre-filled')">💊 Prescribe</button>
+              <button class="btn btn-ghost btn-sm" onclick="showPanel('s-lab',null,'staff-page')">🔬 Lab Results</button>
+              <button class="btn btn-ghost btn-sm" onclick="showPanel('s-vital',null,'staff-page')">📈 Vitals</button>
+            </div>
+          </div>
+          <div style="background:var(--bg);border-radius:10px;padding:12px">
+            <div style="font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">Recent Records</div>
+            <table class="dtable">
+              <thead><tr><th>Date</th><th>Type</th><th>Description</th><th>Doctor</th></tr></thead>
+              <tbody>
+                <tr><td>Apr 15, 2025</td><td><span class="badge b-blue">Diagnosis</span></td><td>Hypertension Stage 1</td><td>Dr. Mbeki</td></tr>
+                <tr><td>Apr 15, 2025</td><td><span class="badge b-green">Prescription</span></td><td>Amlodipine 5mg</td><td>Dr. Mbeki</td></tr>
+                <tr><td>Apr 10, 2025</td><td><span class="badge b-amber">Lab</span></td><td>CBC — Normal</td><td>Lab Dept.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="s-diag">
+        <div class="page-hd"><h1>Add Diagnosis</h1><p>This will instantly appear on the patient's app as a live update.</p></div>
+        <div class="africa-alert"><div class="africa-alert-icon">🔴</div><div><h4>Live Update Mode</h4><p>When you save this diagnosis, it will appear immediately on John Adama's MediBook app and they will receive a push notification.</p></div></div>
+        <div class="card">
+          <div class="grid-2">
+            <div class="fgroup"><label>Patient</label><input type="text" class="finput" value="John Adama — PAT-2024-0047" readonly style="background:var(--bg)"></div>
+            <div class="fgroup"><label>Date</label><input type="date" class="finput" id="diag-date"></div>
+            <div class="fgroup" style="grid-column:1/-1"><label>Diagnosis Title</label><input type="text" class="finput" placeholder="e.g. Hypertension Stage 1"></div>
+            <div class="fgroup"><label>ICD-10 Code</label><input type="text" class="finput" placeholder="e.g. I10"></div>
+            <div class="fgroup"><label>Department</label><select class="finput"><option>Internal Medicine</option><option>Cardiology</option><option>Neurology</option><option>Emergency</option><option>Pediatrics</option><option>Infectious Disease</option></select></div>
+            <div class="fgroup"><label>Severity</label><select class="finput"><option>Mild</option><option>Moderate</option><option>Severe</option><option>Critical</option></select></div>
+            <div class="fgroup"><label>Status</label><select class="finput"><option>Active</option><option>Resolved</option><option>Chronic</option><option>Under Observation</option></select></div>
+            <div class="fgroup" style="grid-column:1/-1"><label>Clinical Notes</label><textarea class="finput" rows="4" placeholder="Detailed notes, symptoms, treatment plan, patient advice..."></textarea></div>
+            <div class="fgroup" style="grid-column:1/-1"><label>Notify Patient Via</label><div style="display:flex;gap:10px;margin-top:4px"><label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400"><input type="checkbox" checked> App notification</label><label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400"><input type="checkbox" checked> SMS (WhatsApp)</label><label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400"><input type="checkbox"> Email</label></div></div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:4px">
+            <button class="btn btn-G" onclick="addRecord('diagnosis')">✅ Save & Send Live Update</button>
+            <button class="btn btn-ghost" onclick="showToast('Draft saved locally')">Save Draft</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="s-rx">
+        <div class="page-hd"><h1>Add Prescription</h1><p>Prescription will appear live on patient's app.</p></div>
+        <div class="card">
+          <div class="grid-2">
+            <div class="fgroup"><label>Patient</label><input type="text" class="finput" value="John Adama — PAT-2024-0047" readonly style="background:var(--bg)"></div>
+            <div class="fgroup"><label>Date</label><input type="date" class="finput"></div>
+            <div class="fgroup" style="grid-column:1/-1"><label>Medication Name</label><input type="text" class="finput" placeholder="e.g. Amlodipine"></div>
+            <div class="fgroup"><label>Dosage</label><input type="text" class="finput" placeholder="e.g. 5mg"></div>
+            <div class="fgroup"><label>Frequency</label><select class="finput"><option>Once daily</option><option>Twice daily</option><option>Three times daily</option><option>As needed</option><option>With meals</option></select></div>
+            <div class="fgroup"><label>Duration</label><input type="text" class="finput" placeholder="e.g. 90 days"></div>
+            <div class="fgroup"><label>Route</label><select class="finput"><option>Oral</option><option>Injection IM</option><option>IV</option><option>Topical</option></select></div>
+            <div class="fgroup"><label>Refills Allowed</label><input type="number" class="finput" value="3" min="0" max="12"></div>
+            <div class="fgroup" style="grid-column:1/-1"><label>Instructions for Patient</label><textarea class="finput" rows="3" placeholder="Take with food. Avoid alcohol. Take at same time daily..."></textarea></div>
+            <div class="fgroup" style="grid-column:1/-1"><label>Check for Allergies</label><div style="background:var(--A2);border-radius:8px;padding:10px;font-size:13px;color:var(--A);font-weight:600">⚠️ Patient has documented allergy to: <strong>Penicillin</strong>. Verify this prescription does not conflict.</div></div>
+          </div>
+          <button class="btn btn-G" style="margin-top:8px" onclick="addRecord('prescription')">💊 Save Prescription & Notify Patient</button>
+        </div>
+      </div>
+
+      <div class="panel" id="s-lab">
+        <div class="page-hd"><h1>Upload Lab Results</h1></div>
+        <div class="card">
+          <div class="grid-2">
+            <div class="fgroup"><label>Patient</label><input type="text" class="finput" value="John Adama — PAT-2024-0047" readonly style="background:var(--bg)"></div>
+            <div class="fgroup"><label>Test Date</label><input type="date" class="finput"></div>
+            <div class="fgroup" style="grid-column:1/-1"><label>Test Name</label><input type="text" class="finput" placeholder="e.g. Complete Blood Count (CBC)"></div>
+            <div class="fgroup"><label>Category</label><select class="finput"><option>Hematology</option><option>Biochemistry</option><option>Microbiology</option><option>Serology</option><option>Radiology</option><option>Malaria RDT</option><option>Typhoid Widal</option><option>HIV Test</option></select></div>
+            <div class="fgroup"><label>Overall Status</label><select class="finput"><option>Normal</option><option>Abnormal — Mild</option><option>Abnormal — Moderate</option><option>Critical</option><option>Negative</option><option>Positive</option></select></div>
+            <div class="fgroup" style="grid-column:1/-1"><label>Results Detail</label><textarea class="finput" rows="5" placeholder="Enter individual test values, reference ranges, and interpretation..."></textarea></div>
+            <div class="fgroup" style="grid-column:1/-1">
+              <label>Upload Report File (PDF/Image)</label>
+              <div class="scan-zone" onclick="showToast('File picker opened...')">
+                <div style="font-size:24px;margin-bottom:6px">📁</div>
+                <div style="font-size:13px;font-weight:600">Click to upload lab report PDF or image</div>
+                <div style="font-size:11px;color:var(--tx3)">Max 5MB · PDF, JPG, PNG</div>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-G" style="margin-top:8px" onclick="addRecord('lab_result')">🔬 Upload Results & Notify Patient</button>
+        </div>
+      </div>
+
+      <div class="panel" id="s-vital">
+        <div class="page-hd"><h1>Record Patient Vitals</h1></div>
+        <div class="card">
+          <div style="background:var(--bg);border-radius:10px;padding:14px;margin-bottom:16px">
+            <div style="font-weight:700;margin-bottom:3px">John Adama — PAT-2024-0047</div>
+            <div style="font-size:12px;color:var(--tx3)">Last vitals: Apr 15, 2025 · BP: 145/95 · Temp: 36.8° · HR: 78 bpm</div>
+          </div>
+          <div class="grid-2">
+            <div class="fgroup"><label>Blood Pressure (Systolic)</label><input type="number" class="finput" placeholder="120"></div>
+            <div class="fgroup"><label>Blood Pressure (Diastolic)</label><input type="number" class="finput" placeholder="80"></div>
+            <div class="fgroup"><label>Temperature (°C)</label><input type="number" class="finput" placeholder="36.5" step="0.1"></div>
+            <div class="fgroup"><label>Heart Rate (bpm)</label><input type="number" class="finput" placeholder="72"></div>
+            <div class="fgroup"><label>O₂ Saturation (%)</label><input type="number" class="finput" placeholder="98"></div>
+            <div class="fgroup"><label>Respiratory Rate</label><input type="number" class="finput" placeholder="16"></div>
+            <div class="fgroup"><label>Weight (kg)</label><input type="number" class="finput" placeholder="72"></div>
+            <div class="fgroup"><label>Height (cm)</label><input type="number" class="finput" placeholder="178"></div>
+            <div class="fgroup" style="grid-column:1/-1"><label>Clinical Notes</label><textarea class="finput" rows="3" placeholder="Observations during vital recording..."></textarea></div>
+          </div>
+          <button class="btn btn-G" onclick="addRecord('vitals')">📈 Save Vitals — Patient Will See Live Update</button>
+        </div>
+      </div>
+
+      <div class="panel" id="s-appt">
+        <div class="page-hd"><h1>Schedule Appointment</h1></div>
+        <div class="card">
+          <div class="grid-2">
+            <div class="fgroup"><label>Patient</label><input type="text" class="finput" value="John Adama — PAT-2024-0047" readonly style="background:var(--bg)"></div>
+            <div class="fgroup"><label>Doctor</label><input type="text" class="finput" value="Dr. Emmanuel Mbeki"></div>
+            <div class="fgroup"><label>Date</label><input type="date" class="finput"></div>
+            <div class="fgroup"><label>Time</label><input type="time" class="finput"></div>
+            <div class="fgroup" style="grid-column:1/-1"><label>Appointment Type</label><select class="finput"><option>General Consultation</option><option>Follow-up</option><option>Lab Review</option><option>Specialist</option><option>Emergency</option><option>BP Monitoring</option><option>Blood Work</option></select></div>
+            <div class="fgroup"><label>Room / Location</label><input type="text" class="finput" placeholder="Room 204"></div>
+            <div class="fgroup"><label>Duration</label><select class="finput"><option>15 minutes</option><option>30 minutes</option><option>45 minutes</option><option>1 hour</option></select></div>
+            <div class="fgroup" style="grid-column:1/-1"><label>Instructions for Patient</label><textarea class="finput" rows="3" placeholder="What to bring, fasting requirements, preparation..."></textarea></div>
+          </div>
+          <button class="btn btn-G" onclick="addRecord('appointment')">📅 Schedule — Patient Will Be Notified</button>
+        </div>
+      </div>
+
+      <div class="panel" id="s-notify">
+        <div class="page-hd"><h1>Send Notification</h1></div>
+        <div class="card">
+          <div class="grid-2">
+            <div class="fgroup"><label>Patient</label><input type="text" class="finput" value="John Adama — PAT-2024-0047" readonly style="background:var(--bg)"></div>
+            <div class="fgroup"><label>Type</label><select class="finput"><option>General</option><option>Record Updated</option><option>Appointment Reminder</option><option>Lab Results Ready</option><option>Medication Reminder</option><option>Season Health Alert</option></select></div>
+            <div class="fgroup" style="grid-column:1/-1"><label>Subject</label><input type="text" class="finput" placeholder="Message subject..."></div>
+            <div class="fgroup" style="grid-column:1/-1"><label>Message</label><textarea class="finput" rows="5" placeholder="Write the notification message..."></textarea></div>
+            <div class="fgroup" style="grid-column:1/-1"><label>Delivery Method</label><div style="display:flex;gap:10px"><label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400"><input type="checkbox" checked> App</label><label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400"><input type="checkbox" checked> SMS</label><label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400"><input type="checkbox"> WhatsApp</label><label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400"><input type="checkbox"> Email</label></div></div>
+          </div>
+          <button class="btn btn-G" onclick="showToast('📢 Notification sent to John Adama on all channels!')">📢 Send Notification</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     ADMIN DASHBOARD
+═══════════════════════════════════════ -->
+<div class="page dash" id="admin-page">
+  <aside class="sidebar" style="background:linear-gradient(175deg,#1a1a2e 0%,#0f0f1a 100%)">
+    <div class="sb-brand"><div class="sb-logo">MediBook</div><div class="sb-tagline">Admin · System Control</div></div>
+    <div class="sb-user"><div class="sb-avatar" style="background:var(--A)">SA</div><div><div class="sb-uname">System Admin</div><div class="sb-urole">Super Administrator</div></div></div>
+    <nav class="sb-nav">
+      <div class="sb-section">Overview</div>
+      <div class="nav-item active" onclick="showPanel('a-dash',this,'admin-page')"><span class="nav-icon">📊</span><span>Dashboard</span></div>
+      <div class="sb-section">Management</div>
+      <div class="nav-item" onclick="showPanel('a-patients',this,'admin-page')"><span class="nav-icon">👥</span><span>Patients</span></div>
+      <div class="nav-item" onclick="showPanel('a-staff',this,'admin-page')"><span class="nav-icon">👨‍⚕️</span><span>Staff</span></div>
+      <div class="nav-item" onclick="showPanel('a-hospitals',this,'admin-page')"><span class="nav-icon">🏥</span><span>Hospitals</span></div>
+      <div class="sb-section">System</div>
+      <div class="nav-item" onclick="showPanel('a-logs',this,'admin-page')"><span class="nav-icon">📜</span><span>Activity Logs</span></div>
+      <div class="nav-item" onclick="showPanel('a-analytics',this,'admin-page')"><span class="nav-icon">📈</span><span>Analytics</span></div>
+      <div class="nav-item" onclick="showPanel('a-settings',this,'admin-page')"><span class="nav-icon">⚙️</span><span>Settings</span></div>
+    </nav>
+    <div class="sb-footer"><button class="logout-btn" onclick="doLogout()">🚪 <span>Sign Out</span></button></div>
+  </aside>
+  <div class="content">
+    <div class="topbar">
+      <div><div class="topbar-meta">Admin Control Panel</div><div class="topbar-title">System Administration</div></div>
+      <div class="topbar-right"><span class="badge b-red">⚙️ Super Admin</span></div>
+    </div>
+    <div class="content-area">
+
+      <div class="panel active" id="a-dash">
+        <div class="page-hd"><h1>System Overview</h1><p>MediBook Africa — Real-time System Statistics · April 24, 2025</p></div>
+        <div class="grid-4 mb-2">
+          <div class="stat-card" style="border-top:3px solid var(--P)"><div class="flex" style="justify-content:space-between;margin-bottom:10px"><div class="stat-icon" style="background:var(--P2)">👥</div><span class="trend trend-up">+24 today</span></div><div class="stat-num" style="color:var(--P)">12,450</div><div class="stat-lbl">Total Patients</div></div>
+          <div class="stat-card" style="border-top:3px solid var(--G)"><div class="flex" style="justify-content:space-between;margin-bottom:10px"><div class="stat-icon" style="background:var(--G2)">👨‍⚕️</div><span class="trend trend-up">+3 week</span></div><div class="stat-num" style="color:var(--G)">342</div><div class="stat-lbl">Healthcare Staff</div></div>
+          <div class="stat-card" style="border-top:3px solid var(--W)"><div class="flex" style="justify-content:space-between;margin-bottom:10px"><div class="stat-icon" style="background:var(--W2)">📋</div><span class="trend trend-up">+156 today</span></div><div class="stat-num" style="color:#b45309">98,420</div><div class="stat-lbl">Total Records</div></div>
+          <div class="stat-card" style="border-top:3px solid var(--pur)"><div class="flex" style="justify-content:space-between;margin-bottom:10px"><div class="stat-icon" style="background:var(--pur2)">📷</div><span class="trend trend-up">+34 today</span></div><div class="stat-num" style="color:var(--pur)">4,821</div><div class="stat-lbl">Pages Scanned</div></div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-hd"><div class="card-title">Common Conditions — Cameroon (2025)</div></div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Malaria</span><span style="font-weight:700;color:var(--A)">34%</span></div><div style="height:8px;background:var(--bg2);border-radius:4px"><div style="height:100%;width:34%;background:var(--A);border-radius:4px"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Hypertension</span><span style="font-weight:700;color:var(--P)">28%</span></div><div style="height:8px;background:var(--bg2);border-radius:4px"><div style="height:100%;width:28%;background:var(--P);border-radius:4px"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Diabetes</span><span style="font-weight:700;color:var(--W)">16%</span></div><div style="height:8px;background:var(--bg2);border-radius:4px"><div style="height:100%;width:16%;background:var(--W);border-radius:4px"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Typhoid</span><span style="font-weight:700;color:var(--G)">12%</span></div><div style="height:8px;background:var(--bg2);border-radius:4px"><div style="height:100%;width:12%;background:var(--G);border-radius:4px"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Sickle Cell</span><span style="font-weight:700;color:var(--pur)">7%</span></div><div style="height:8px;background:var(--bg2);border-radius:4px"><div style="height:100%;width:7%;background:var(--pur);border-radius:4px"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Other</span><span style="font-weight:700;color:var(--tx3)">3%</span></div><div style="height:8px;background:var(--bg2);border-radius:4px"><div style="height:100%;width:3%;background:var(--tx3);border-radius:4px"></div></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><div class="card-title">System Health</div></div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span>Database Storage</span><span style="font-weight:700">68% used</span></div><div style="height:8px;background:var(--bg2);border-radius:4px"><div style="height:100%;width:68%;background:var(--P);border-radius:4px"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span>Server Load</span><span style="font-weight:700;color:var(--G)">24%</span></div><div style="height:8px;background:var(--bg2);border-radius:4px"><div style="height:100%;width:24%;background:var(--G);border-radius:4px"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span>Uptime</span><span style="font-weight:700;color:var(--G)">99.9%</span></div><div style="height:8px;background:var(--bg2);border-radius:4px"><div style="height:100%;width:99.9%;background:var(--G);border-radius:4px"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span>AI Chat Load</span><span style="font-weight:700;color:var(--W)">45%</span></div><div style="height:8px;background:var(--bg2);border-radius:4px"><div style="height:100%;width:45%;background:var(--W);border-radius:4px"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span>Offline Sync Queue</span><span style="font-weight:700;color:var(--pur)">23 records</span></div><div style="height:8px;background:var(--bg2);border-radius:4px"><div style="height:100%;width:8%;background:var(--pur);border-radius:4px"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card mt-2">
+          <div class="card-hd"><div class="card-title">Recent System Activity</div></div>
+          <table class="dtable">
+            <thead><tr><th>Time</th><th>User</th><th>Action</th><th>Record Type</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>09:15</td><td>Dr. Mbeki</td><td>Added prescription for John Adama</td><td><span class="badge b-green">Prescription</span></td><td><span class="badge b-green dot-green">Live</span></td></tr>
+              <tr><td>09:10</td><td>John Adama</td><td>Scanned hospital book — 2 pages</td><td><span class="badge b-pur">Scan</span></td><td><span class="badge b-green">Saved</span></td></tr>
+              <tr><td>08:55</td><td>Lab Tech Joseph</td><td>Uploaded CBC results for PAT-2024-0047</td><td><span class="badge b-amber">Lab Result</span></td><td><span class="badge b-green">Notified</span></td></tr>
+              <tr><td>08:30</td><td>Admin</td><td>System settings updated</td><td><span class="badge b-gray">Settings</span></td><td><span class="badge b-green">Applied</span></td></tr>
+              <tr><td>08:00</td><td>Grace Nkomo</td><td>New patient registration</td><td><span class="badge b-blue">Registration</span></td><td><span class="badge b-green">Verified</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel" id="a-patients">
+        <div class="page-hd"><h1>Patient Management</h1></div>
+        <div class="card">
+          <div class="card-hd"><div class="card-title">All Patients (12,450)</div><div class="flex gap-8"><input type="text" class="finput" placeholder="Search..." style="max-width:200px"><button class="btn btn-P btn-sm" onclick="showToast('Exporting CSV...')">Export CSV</button></div></div>
+          <table class="dtable">
+            <thead><tr><th>ID</th><th>Name</th><th>Age</th><th>Region</th><th>Records</th><th>Scanned</th><th>Last Active</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><code>PAT-2024-0047</code></td><td><strong>John Adama</strong></td><td>34</td><td>Centre</td><td>14</td><td><span class="badge b-pur">3 pages</span></td><td>Today</td><td><span class="badge b-green">Active</span></td></tr>
+              <tr><td><code>PAT-2025-0012</code></td><td><strong>Grace Nkomo</strong></td><td>28</td><td>Littoral</td><td>5</td><td><span class="badge b-gray">None</span></td><td>Today</td><td><span class="badge b-green">Active</span></td></tr>
+              <tr><td><code>PAT-2024-0031</code></td><td><strong>Robert Fouda</strong></td><td>52</td><td>West</td><td>21</td><td><span class="badge b-pur">7 pages</span></td><td>Apr 22</td><td><span class="badge b-amber">Inactive</span></td></tr>
+              <tr><td><code>PAT-2024-0055</code></td><td><strong>Alice Biya</strong></td><td>45</td><td>Centre</td><td>9</td><td><span class="badge b-pur">2 pages</span></td><td>Apr 23</td><td><span class="badge b-green">Active</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel" id="a-staff">
+        <div class="page-hd"><h1>Staff Management</h1></div>
+        <div class="card"><div class="card-hd"><div class="card-title">Healthcare Staff (342)</div><button class="btn btn-P btn-sm" onclick="showToast('Add staff form...')">+ Add Staff</button></div>
+          <table class="dtable"><thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Dept</th><th>Hospital</th><th>Records Today</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><code>STF-001</code></td><td><strong>Dr. E. Mbeki</strong></td><td>Doctor</td><td>Internal Medicine</td><td>CHU Yaoundé</td><td>12</td><td><span class="badge b-green dot-green">On Duty</span></td></tr>
+            <tr><td><code>STF-002</code></td><td><strong>Dr. M. Eto'o</strong></td><td>Doctor</td><td>Emergency</td><td>CHU Yaoundé</td><td>8</td><td><span class="badge b-green dot-green">On Duty</span></td></tr>
+            <tr><td><code>STF-003</code></td><td><strong>Nurse A. Bello</strong></td><td>Nurse</td><td>Cardiology</td><td>Central Hosp.</td><td>5</td><td><span class="badge b-gray">Off Duty</span></td></tr>
+            <tr><td><code>STF-004</code></td><td><strong>Lab Tech. Joseph</strong></td><td>Lab Tech</td><td>Laboratory</td><td>CHU Yaoundé</td><td>18</td><td><span class="badge b-green dot-green">On Duty</span></td></tr>
+          </tbody></table>
+        </div>
+      </div>
+
+      <div class="panel" id="a-hospitals">
+        <div class="page-hd"><h1>Hospital Network</h1></div>
+        <div class="grid-2">
+          <div class="card" style="border-top:4px solid var(--P)"><div style="font-weight:800;font-size:15px;margin-bottom:6px">🏥 CHU Yaoundé</div><div style="font-size:12px;color:var(--tx2);margin-bottom:12px">Hôpital Central — Avenue de l'Hôpital, Yaoundé</div><div class="flex gap-12" style="font-size:13px;margin-bottom:12px"><span>👥 4,200 patients</span><span>👨‍⚕️ 120 staff</span></div><div class="flex gap-6"><span class="badge b-green dot-green">Online</span><span class="badge b-pur">Scan Enabled</span></div></div>
+          <div class="card" style="border-top:4px solid var(--G)"><div style="font-weight:800;font-size:15px;margin-bottom:6px">🏥 Hôpital Central Yaoundé</div><div style="font-size:12px;color:var(--tx2);margin-bottom:12px">Quartier du Lac, Yaoundé</div><div class="flex gap-12" style="font-size:13px;margin-bottom:12px"><span>👥 6,800 patients</span><span>👨‍⚕️ 180 staff</span></div><div class="flex gap-6"><span class="badge b-green dot-green">Online</span><span class="badge b-pur">Scan Enabled</span></div></div>
+          <div class="card" style="border-top:4px solid var(--W)"><div style="font-weight:800;font-size:15px;margin-bottom:6px">🏥 District Hospital Mfou</div><div style="font-size:12px;color:var(--tx2);margin-bottom:12px">Mfou District, Centre Region</div><div class="flex gap-12" style="font-size:13px;margin-bottom:12px"><span>👥 1,450 patients</span><span>👨‍⚕️ 42 staff</span></div><div class="flex gap-6"><span class="badge b-amber">Offline Sync</span><span class="badge b-pur">Scan Enabled</span></div></div>
+          <div class="card" style="border-top:4px solid var(--A);border-style:dashed;background:var(--bg);cursor:pointer" onclick="showToast('Add hospital form...')"><div style="text-align:center;padding:20px"><div style="font-size:32px;margin-bottom:8px">➕</div><div style="font-weight:700;color:var(--tx2)">Add New Hospital</div><div style="font-size:12px;color:var(--tx3);margin-top:4px">Connect more hospitals to the network</div></div></div>
+        </div>
+      </div>
+
+      <div class="panel" id="a-logs">
+        <div class="page-hd"><h1>Activity Logs</h1><p>Full system audit trail — every action logged for accountability.</p></div>
+        <div class="card"><div class="card-hd"><div class="card-title">System Logs</div><button class="btn btn-ghost btn-sm" onclick="showToast('Exporting...')">Export Logs</button></div>
+          <table class="dtable"><thead><tr><th>Timestamp</th><th>User</th><th>Role</th><th>Action</th><th>Record Type</th><th>Patient</th><th>IP</th></tr></thead>
+          <tbody>
+            <tr><td>09:15:42</td><td>Dr. Mbeki</td><td><span class="badge b-green">Staff</span></td><td>Added prescription</td><td><span class="badge b-green">Rx</span></td><td>PAT-2024-0047</td><td>192.168.1.45</td></tr>
+            <tr><td>09:10:15</td><td>John Adama</td><td><span class="badge b-blue">Patient</span></td><td>Scanned hospital book</td><td><span class="badge b-pur">Scan</span></td><td>Self</td><td>10.0.0.12</td></tr>
+            <tr><td>08:55:00</td><td>Lab Tech Joseph</td><td><span class="badge b-green">Staff</span></td><td>Uploaded lab results</td><td><span class="badge b-amber">Lab</span></td><td>PAT-2024-0047</td><td>192.168.1.67</td></tr>
+            <tr><td>08:30:22</td><td>admin@system.com</td><td><span class="badge b-red">Admin</span></td><td>Settings updated</td><td><span class="badge b-gray">System</span></td><td>—</td><td>192.168.1.1</td></tr>
+          </tbody></table>
+        </div>
+      </div>
+
+      <div class="panel" id="a-analytics">
+        <div class="page-hd"><h1>Analytics & Reports</h1></div>
+        <div class="grid-4 mb-2">
+          <div class="stat-card"><div class="stat-icon" style="background:var(--pur2);margin-bottom:10px">📷</div><div class="stat-num" style="color:var(--pur)">4,821</div><div class="stat-lbl">Pages Scanned</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:var(--G2);margin-bottom:10px">🔴</div><div class="stat-num" style="color:var(--G)">89,241</div><div class="stat-lbl">Live Updates Sent</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:var(--P2);margin-bottom:10px">🤖</div><div class="stat-num" style="color:var(--P)">12,893</div><div class="stat-lbl">AI Chat Sessions</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:var(--W2);margin-bottom:10px">📄</div><div class="stat-num" style="color:#b45309">3,240</div><div class="stat-lbl">PDFs Downloaded</div></div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><div class="card-title">Monthly Records Added</div></div>
+          <div class="bar-chart" style="margin-bottom:30px">
+            <div class="bar" style="height:55%"><span class="bar-lbl">Jan</span><span class="bar-val">2,810</span></div>
+            <div class="bar" style="height:65%"><span class="bar-lbl">Feb</span><span class="bar-val">3,320</span></div>
+            <div class="bar" style="height:50%"><span class="bar-lbl">Mar</span><span class="bar-val">2,540</span></div>
+            <div class="bar" style="height:88%;background:var(--G2);border:1.5px solid var(--G)"><span class="bar-lbl" style="color:var(--G)">Apr</span><span class="bar-val" style="color:var(--G)">4,491</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="a-settings">
+        <div class="page-hd"><h1>System Settings</h1></div>
+        <div class="grid-2">
+          <div class="card"><div class="card-hd"><div class="card-title">General</div></div>
+            <div class="fgroup"><label>System Name</label><input type="text" class="finput" value="MediBook Africa"></div>
+            <div class="fgroup"><label>Session Timeout (minutes)</label><input type="number" class="finput" value="30"></div>
+            <div class="fgroup"><label>Default Language</label><select class="finput"><option>English</option><option>Français</option><option>Bilingual (EN/FR)</option></select></div>
+            <div class="fgroup"><label>Country</label><select class="finput"><option>Cameroon 🇨🇲</option></select></div>
+            <button class="btn btn-G" onclick="showToast('✅ Settings saved!')">Save Settings</button>
+          </div>
+          <div class="card"><div class="card-hd"><div class="card-title">Features</div></div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px"><input type="checkbox" checked> <div><div style="font-weight:600">AI Scan — Hospital Book OCR</div><div style="color:var(--tx3);font-size:12px">Allow patients to scan paper records</div></div></label>
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px"><input type="checkbox" checked> <div><div style="font-weight:600">Live Doctor Updates</div><div style="color:var(--tx3);font-size:12px">Real-time push notifications</div></div></label>
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px"><input type="checkbox" checked> <div><div style="font-weight:600">MediAI Africa Chatbot</div><div style="color:var(--tx3);font-size:12px">AI health assistant (EN/FR/Pidgin)</div></div></label>
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px"><input type="checkbox" checked> <div><div style="font-weight:600">Offline Mode</div><div style="color:var(--tx3);font-size:12px">Cache data for rural connectivity</div></div></label>
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px"><input type="checkbox"> <div><div style="font-weight:600">WhatsApp Notifications</div><div style="color:var(--tx3);font-size:12px">Send updates via WhatsApp</div></div></label>
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px"><input type="checkbox" checked> <div><div style="font-weight:600">Health Passport QR</div><div style="color:var(--tx3);font-size:12px">Scannable patient ID card</div></div></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT PAGE -->
+<div class="page" id="about-page">
+  <nav class="land-nav"><div class="land-logo" onclick="goPage('land')" style="cursor:pointer">MediBook<sub>AFRICA</sub></div><button class="btn btn-P" onclick="goPage('land')">← Home</button></nav>
+  <div style="max-width:960px;margin:0 auto;padding:3rem 2rem">
+    <div style="text-align:center;margin-bottom:3rem"><span class="section-tag">Final Year Project</span><h1 style="font-family:var(--disp);font-size:2.5rem;margin-top:10px">About MediBook Africa</h1><p style="color:var(--tx2);max-width:600px;margin:10px auto 0">A complete digital health platform solving Africa's healthcare records challenge, built as a final year Computer Science degree project.</p></div>
+    <div class="grid-2 mb-2">
+      <div class="card"><div style="font-size:15px;font-weight:700;color:var(--P);border-bottom:2px solid var(--P2);padding-bottom:10px;margin-bottom:14px">🎯 Project Purpose</div><p style="font-size:13px;color:var(--tx2);line-height:1.7">MediBook Africa digitizes patient medical records, enabling secure storage and retrieval by patients and healthcare professionals. It addresses Africa's paper record challenge with AI-powered scanning, live doctor updates, and offline functionality built for low-connectivity regions.</p></div>
+      <div class="card"><div style="font-size:15px;font-weight:700;color:var(--P);border-bottom:2px solid var(--P2);padding-bottom:10px;margin-bottom:14px">🔬 Technology Stack</div><ul style="list-style:none;font-size:13px;color:var(--tx2)"><li style="padding:3px 0">→ Frontend: HTML5, CSS3, JavaScript (ES6+)</li><li style="padding:3px 0">→ Backend: PHP 8.x with MVC architecture</li><li style="padding:3px 0">→ Database: MySQL 8.0 with prepared statements</li><li style="padding:3px 0">→ AI: Anthropic Claude API (+ rule-based fallback)</li><li style="padding:3px 0">→ OCR: Tesseract.js for hospital book scanning</li><li style="padding:3px 0">→ PDF: TCPDF / Puppeteer for exports</li><li style="padding:3px 0">→ Offline: IndexedDB + Service Workers</li></ul></div>
+    </div>
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:var(--P);border-bottom:2px solid var(--P2);padding-bottom:10px;margin-bottom:14px">🔐 Login Credentials</div>
+      <table class="dtable"><thead><tr><th>Role</th><th>Email</th><th>Password</th><th>Access</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge b-blue">Patient</span></td><td>patient@system.com</td><td>patient123</td><td><button class="btn btn-P btn-sm" onclick="quickDemo('patient')">Login</button></td></tr>
+        <tr><td><span class="badge b-green">Staff</span></td><td>staff@system.com</td><td>staff123</td><td><button class="btn btn-G btn-sm" onclick="quickDemo('staff')">Login</button></td></tr>
+        <tr><td><span class="badge b-red">Admin</span></td><td>admin@system.com</td><td>admin123</td><td><button class="btn btn-A btn-sm" onclick="quickDemo('admin')">Login</button></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- DOCS PAGE -->
+<div class="page" id="docs-page">
+  <nav class="land-nav"><div class="land-logo" onclick="goPage('land')" style="cursor:pointer">MediBook<sub>AFRICA</sub></div><button class="btn btn-P" onclick="goPage('land')">← Home</button></nav>
+  <div style="max-width:960px;margin:0 auto;padding:3rem 2rem">
+    <h1 style="font-family:var(--disp);font-size:2.2rem;margin-bottom:1.5rem">Documentation</h1>
+    <div class="card mb-2"><div style="font-size:15px;font-weight:700;color:var(--P);margin-bottom:12px">📦 Installation</div><ul style="list-style:none;font-size:13px;color:var(--tx2)"><li style="padding:3px 0">1. Clone project → /var/www/html/medibook</li><li style="padding:3px 0">2. Import database/medibook.sql to MySQL</li><li style="padding:3px 0">3. Copy config/config.example.php → config.php</li><li style="padding:3px 0">4. Update DB credentials in config.php</li><li style="padding:3px 0">5. Install Tesseract OCR engine for scan feature</li><li style="padding:3px 0">6. Run: composer install</li><li style="padding:3px 0">7. Visit http://localhost/medibook</li></ul></div>
+    <div class="card"><div style="font-size:15px;font-weight:700;color:var(--P);margin-bottom:12px">🗄️ Database Tables</div><ul style="list-style:none;font-size:13px;color:var(--tx2)"><li style="padding:3px 0">→ users — Authentication for all roles</li><li style="padding:3px 0">→ patients — Extended patient profiles + health passport</li><li style="padding:3px 0">→ medical_records — All record types with source tracking</li><li style="padding:3px 0">→ scanned_records — OCR results with confidence scores</li><li style="padding:3px 0">→ vitals — Time-series vital signs</li><li style="padding:3px 0">→ live_updates — Real-time doctor → patient feed</li><li style="padding:3px 0">→ prescriptions — Medication prescriptions</li><li style="padding:3px 0">→ lab_results — Laboratory test results</li><li style="padding:3px 0">→ appointments — Scheduled appointments</li><li style="padding:3px 0">→ notifications — Multi-channel notifications (app/SMS/WhatsApp)</li><li style="padding:3px 0">→ ai_chat_history — Chatbot conversations</li><li style="padding:3px 0">→ activity_logs — Full audit trail</li></ul></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     JAVASCRIPT ENGINE
+═══════════════════════════════════════ -->
+<script>
+'use strict';
+
+// ── STATE ──────────────────────────────
+const STATE = {
+  loginRole: 'patient',
+  chatOpen: false,
+  scanStep: 1
+};
+
+// ── DATE INIT ──────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const d = new Date();
+  const fmt = {day:'numeric',month:'long',year:'numeric'};
+  const el = document.getElementById('current-date');
+  if(el) el.textContent = d.toLocaleDateString('en-GB', fmt);
+
+  // Set date inputs to today
+  document.querySelectorAll('input[type="date"]').forEach(inp => {
+    if(!inp.value) inp.value = new Date().toISOString().split('T')[0];
+  });
+  document.querySelectorAll('input[type="datetime-local"]').forEach(inp => {
+    if(!inp.value) inp.value = new Date().toISOString().slice(0,16);
+  });
+});
+
+// ── PAGE SYSTEM ────────────────────────
+function goPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(name + '-page').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ── PANELS ────────────────────────────
+function showPanel(id, navEl, pageId) {
+  const page = document.getElementById(pageId);
+  if(!page) return;
+  page.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById(id);
+  if(panel) panel.classList.add('active');
+  if(navEl) {
+    page.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    navEl.classList.add('active');
+  }
+  const tb = document.getElementById('p-topbar-title');
+  const titles = {
+    'p-dash':'Dashboard','p-passport':'Health Passport','p-history':'Medical History',
+    'p-rx':'Prescriptions','p-diagnoses':'Diagnoses','p-lab':'Lab Results',
+    'p-vitals':'Vitals Tracker','p-appts':'Appointments','p-profile':'My Profile',
+    'p-feed':'Live Updates','p-notifs':'Notifications','p-download':'Download Records'
+  };
+  if(tb && titles[id]) tb.textContent = titles[id];
+}
+
+// ── MODALS ────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.overlay').forEach(o => {
+  o.addEventListener('click', e => { if(e.target === o) o.classList.remove('open'); });
+});
+
+// ── AUTH ──────────────────────────────
+let selectedRole = 'patient';
+function setRole(role, el) {
+  selectedRole = role;
+  document.querySelectorAll('#login-modal .role-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function fillCreds(email, pass, role) {
+  document.getElementById('l-email').value = email;
+  document.getElementById('l-pass').value = pass;
+  selectedRole = role;
+  document.querySelectorAll('#login-modal .role-btn').forEach((b, i) => {
+    b.classList.remove('active');
+    if(['patient','staff','admin'][i] === role) b.classList.add('active');
+  });
+}
+
+function doLogin() {
+  const email = document.getElementById('l-email').value.trim();
+  const pass  = document.getElementById('l-pass').value.trim();
+  if(!email || !pass) { showToast('⚠️ Enter email and password'); return; }
+  const accounts = {
+    'patient@system.com': {pass:'patient123', role:'patient'},
+    'staff@system.com':   {pass:'staff123',   role:'staff'},
+    'admin@system.com':   {pass:'admin123',   role:'admin'},
+  };
+  const acc = accounts[email.toLowerCase()];
+  if(acc && acc.pass === pass) {
+    closeModal('login-modal');
+    showToast('✅ Login successful! Loading your health passport...');
+    setTimeout(() => goPage(acc.role), 900);
+  } else {
+    showToast('❌ Invalid credentials. Use demo accounts above.');
+  }
+}
+
+function doRegister() {
+  const first = document.getElementById('r-first').value;
+  const last  = document.getElementById('r-last').value;
+  const email = document.getElementById('r-email').value;
+  const pass  = document.getElementById('r-pass').value;
+  if(!first || !last || !email) { showToast('⚠️ Fill all required fields'); return; }
+  if(pass && pass.length < 8) { showToast('⚠️ Password must be 8+ characters'); return; }
+  closeModal('register-modal');
+  showToast('✅ Account created! Your Health Passport is being generated...');
+  setTimeout(() => openModal('login-modal'), 1200);
+}
+
+function quickDemo(role) {
+  closeModal('login-modal');
+  closeModal('register-modal');
+  showToast('✅ Entering ' + role.charAt(0).toUpperCase() + role.slice(1) + ' Portal...');
+  setTimeout(() => goPage(role), 700);
+}
+
+function doLogout() {
+  showToast('👋 Signed out. Stay healthy!');
+  setTimeout(() => goPage('land'), 900);
+}
+
+// ── SEARCH ────────────────────────────
+function doSearch() {
+  const q = document.getElementById('search-inp')?.value.trim();
+  if(!q) { showToast('Enter a patient name, ID or phone number'); return; }
+  showToast('🔍 Found: John Adama — PAT-2024-0047');
+  const res = document.getElementById('search-result');
+  if(res) { res.classList.remove('hidden'); res.scrollIntoView({behavior:'smooth'}); }
+}
+
+// ── LIVE UPDATE SIMULATION ─────────────
+function simulateLiveUpdate() {
+  showToast('🔴 Simulating live update from Dr. Mbeki...');
+  setTimeout(() => openModal('live-update-modal'), 1000);
+}
+
+// ── ADD RECORD (Staff Live Update) ─────
+function addRecord(type) {
+  const labels = {
+    diagnosis: '🩺 Diagnosis added — Patient notified live!',
+    prescription: '💊 Prescription saved — Patient notified live!',
+    lab_result: '🔬 Lab results uploaded — Patient notified!',
+    vitals: '📈 Vitals recorded — Doctor can see trend!',
+    appointment: '📅 Appointment scheduled — Patient notified!'
+  };
+  showToast('✅ ' + (labels[type] || 'Record saved!'));
+}
+
+function addVital() { showToast('📈 Add vitals form ready!'); }
+
+// ── SCAN SYSTEM ───────────────────────
+function triggerScan() {
+  document.getElementById('scan-file-input')?.click();
+}
+
+function startScan(method) {
+  if(method === 'photo') {
+    const inp = document.getElementById('scan-file-input');
+    if(inp) { inp.setAttribute('capture', 'camera'); inp.click(); }
+  } else {
+    const inp = document.getElementById('scan-file-input');
+    if(inp) { inp.removeAttribute('capture'); inp.click(); }
+  }
+  beginScanProcess();
+}
+
+function handleScanFile(input) {
+  if(input.files && input.files[0]) {
+    beginScanProcess();
+  }
+}
+
+function beginScanProcess() {
+  document.getElementById('scan-step-1').classList.add('hidden');
+  document.getElementById('scan-step-2').classList.remove('hidden');
+  document.getElementById('scan-step-3').classList.add('hidden');
+
+  const stages = [
+    {pct:15, txt:'🔍 Analysing image quality...', sub:'Checking resolution and clarity...'},
+    {pct:35, txt:'📝 Extracting text (OCR)...', sub:'Reading text in English and French...'},
+    {pct:55, txt:'🧠 AI identifying medical terms...', sub:'Recognising diagnoses, medications, dates...'},
+    {pct:72, txt:'🔗 Matching to medical database...', sub:'Cross-referencing ICD-10 codes...'},
+    {pct:90, txt:'✅ Organising extracted data...', sub:'Structuring your medical history...'},
+    {pct:100, txt:'🎉 Scan complete!', sub:'All data extracted successfully.'}
+  ];
+
+  let i = 0;
+  const interval = setInterval(() => {
+    if(i >= stages.length) {
+      clearInterval(interval);
+      setTimeout(() => {
+        document.getElementById('scan-step-2').classList.add('hidden');
+        document.getElementById('scan-step-3').classList.remove('hidden');
+      }, 400);
+      return;
+    }
+    const s = stages[i];
+    document.getElementById('scan-fill-bar').style.width = s.pct + '%';
+    document.getElementById('scan-pct').textContent = s.pct + '%';
+    document.getElementById('scan-status-txt').textContent = s.txt;
+    document.getElementById('scan-substatus').textContent = s.sub;
+    i++;
+  }, 600);
+}
+
+function resetScan() {
+  document.getElementById('scan-step-1').classList.remove('hidden');
+  document.getElementById('scan-step-2').classList.add('hidden');
+  document.getElementById('scan-step-3').classList.add('hidden');
+  document.getElementById('scan-fill-bar').style.width = '0%';
+}
+
+function saveScanRecord() {
+  closeModal('scan-modal');
+  showToast('✅ 7 data points saved from your hospital book!');
+  setTimeout(() => showToast('📋 Record added to your Medical History'), 2000);
+}
+
+// ── CHAT SYSTEM ───────────────────────
+function toggleChat() {
+  STATE.chatOpen = !STATE.chatOpen;
+  document.getElementById('chat-win').classList.toggle('open', STATE.chatOpen);
+}
+
+const medKB = {
+  malaria: `**Malaria — Common in Cameroon** 🦟\n\n**Symptoms:**\n• High fever (often 38-40°C)\n• Chills and sweating\n• Severe headache and body aches\n• Nausea/vomiting\n• Fatigue\n\n**Treatment in Cameroon:**\n• Artemisinin-based Combination Therapy (ACT) — Coartem is standard\n• Complete the full 3-day course even if you feel better\n• Drink plenty of fluids\n\n**Prevention:**\n• Sleep under ITN (insecticide-treated nets) nightly\n• Use DEET-based mosquito repellent\n• Eliminate standing water near your home\n\n⚠️ **Malaria can kill within 24 hours if untreated. Go to hospital immediately if you suspect malaria.**`,
+  typhoid: `**Typhoid Fever (Fièvre Typhoïde)** 🦠\n\n**Common in:** Yaoundé, Douala, areas with poor water sanitation\n\n**Symptoms:**\n• High sustained fever (39-40°C) for 2+ weeks\n• Stomach pain and rose-colored spots\n• Severe fatigue, loss of appetite\n\n**Diagnosis:** Widal test or blood culture\n\n**Treatment:**\n• Ciprofloxacin or Azithromycin (doctor prescribed)\n• Full course essential — 14 days minimum\n\n**Prevention:**\n• Drink only boiled or bottled water\n• Wash hands thoroughly before eating\n• Avoid roadside food in outbreak areas\n\n⚠️ See a doctor immediately if fever lasts more than 3 days.`,
+  'blood pressure': `**Blood Pressure (Hypertension)** ❤️\n\n**Normal:** Below 120/80 mmHg\n\n**Hypertension in Africa:**\nHypertension affects 46% of Africans — the highest rate globally. Many don't know they have it.\n\n**Symptoms (often none):**\n• Headache, dizziness\n• Nosebleeds, blurred vision\n• Most people have NO symptoms until stroke/heart attack\n\n**Management:**\n• Take medication EVERY DAY — even when feeling well\n• Reduce salt (avoid Maggi cubes in excess, salted fish)\n• Exercise 30 min/day — walking counts!\n• Avoid alcohol and cigarettes\n• Monitor BP at pharmacy regularly\n\n⚠️ Stopping blood pressure medication suddenly is dangerous. Always consult your doctor.`,
+  fever: `**Managing Fever (Fièvre)** 🌡️\n\n**Normal temperature:** 36.1–37.2°C\n**Fever:** Above 38°C\n\n**Immediate steps:**\n• Rest in a cool, ventilated room\n• Drink water/ORS frequently — dehydration is dangerous\n• Take Paracetamol (500mg-1g for adults, weight-based for children)\n• Wear light clothing\n• Cool damp cloth on forehead (NOT cold ice)\n\n**Go to hospital IMMEDIATELY if:**\n• Fever above 39.5°C\n• Child under 5 with any fever\n• Fever + stiff neck (could be meningitis)\n• Fever + rash\n• Fever after travel to endemic area\n• Fever lasting more than 3 days in Cameroon → TEST FOR MALARIA`,
+  diabetes: `**Diabetes (Diabète)** 💉\n\n**Prevalence:** Growing rapidly in urban Cameroon due to changing diets.\n\n**Warning Signs:**\n• Frequent urination, especially at night\n• Excessive thirst and hunger\n• Sudden weight loss\n• Blurred vision\n• Wounds that heal slowly\n• Tingling in feet\n\n**Prevention:**\n• Reduce white rice, white bread, sugary drinks (Coca-Cola, Malta, juice)\n• Increase vegetables, plantain, beans\n• Exercise daily\n• Check blood sugar annually after age 40\n\n**If diagnosed:**\n• Medication + diet is manageable\n• Regular sugar checks are essential\n• Foot care is critical — check daily\n\nDiabetes in Cameroon is often detected late. Get tested.`,
+  'sickle cell': `**Sickle Cell Disease (Drépanocytose)** 🔴\n\n**In Cameroon:** 2% of children are born with sickle cell disease (SCD). 25% of Cameroonians carry the trait.\n\n**Types:**\n• HbSS — Full disease (severe)\n• HbAS — Carrier/Trait (usually healthy)\n• HbSC — Moderate disease\n\n**Triggers of Crisis:**\n• Dehydration\n• Infections (especially malaria — avoid!)\n• Cold temperatures\n• Stress and extreme exercise\n\n**Management:**\n• Folic acid daily\n• Stay hydrated\n• Malaria prophylaxis every day\n• Hydroxyurea (reduces crises) — ask doctor\n• Penicillin prophylaxis for children\n• Have your Hb type on your MediBook passport\n\n⚠️ If you have SCD and develop fever, severe pain, or difficulty breathing — go to emergency NOW.`,
+  cholesterol: `**Cholesterol (Cholestérol)** 🫀\n\nHigh cholesterol has no symptoms but causes heart disease and stroke.\n\n**Healthy levels:**\n• Total: Under 200 mg/dL\n• LDL (bad): Under 100 mg/dL\n• HDL (good): Above 60 mg/dL\n\n**How to improve:**\n• Reduce: fried foods, palm oil excess, red meat\n• Increase: fish, vegetables, oats, beans\n• Exercise regularly\n• Quit smoking`,
+  hospital: `**Hospitals in Yaoundé** 🏥\n\n**Public Hospitals:**\n• CHU Yaoundé — Tel: 222 23 10 98\n• Hôpital Central — Tel: 222 22 31 20\n• Hôpital Gynéco-Obstétrique\n\n**Emergency:**\n• SAMU: 15\n• Police: 17\n• Fire: 18\n\n**Tip:** Morning visits (7-9am) typically have shorter wait times. Bring your MediBook Health Passport QR for faster processing.`,
+  fièvre: `**Fièvre — En Français** 🌡️\n\nFièvre = température au-dessus de 38°C.\n\n**Que faire :**\n• Reposez-vous dans une pièce fraîche\n• Buvez beaucoup d'eau ou de SRO\n• Prenez du Paracétamol (500mg-1g)\n• Mettez un linge humide sur le front\n\n**Consultez un médecin si :**\n• Fièvre au-dessus de 39.5°C\n• Fièvre chez un enfant de moins de 5 ans\n• Fièvre qui dure plus de 3 jours\n• Suspicion de paludisme — TEST URGENT`,
+  headache: `**Headaches** 💆\n\n**Common causes:**\n• Dehydration (very common in Cameroon's heat)\n• Tension/stress\n• Eye strain from phone screens\n• Malaria — always consider in Cameroon\n• High blood pressure\n• Sinus infection\n\n**Relief:**\n• Drink 2-3 glasses of water first\n• Rest in a dark, quiet room\n• Paracetamol or Ibuprofen (not both)\n• Cool cloth on forehead\n\n**See a doctor if:**\n• Severe sudden headache ("thunderclap")\n• Headache + fever + neck stiffness → Emergency\n• Headache + vision changes\n• Frequent headaches more than 2x/week`,
+  default: `I can help you with health questions! I'm trained on diseases common in Cameroon and Africa.\n\n**Topics I know well:**\n• Malaria, Typhoid, Cholera\n• Hypertension, Diabetes, Sickle Cell\n• Fever, Headache, Common symptoms\n• Hospitals in Yaoundé\n• Medications available in Cameroon\n• French health terms (demandez en français!)\n\nWhat would you like to know?`
+};
+
+async function chatSend(text) {
+  const textarea = document.getElementById('chat-textarea');
+  const msg = text || (textarea ? textarea.value.trim() : '');
+  if(!msg) return;
+  if(textarea) textarea.value = '';
+
+  appendMsg(msg, 'usr');
+  const typingEl = appendTyping();
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `You are MediAI Africa, an educational health assistant for patients in Cameroon and West Africa. 
+        Respond in the same language as the question (English, French, or Cameroonian Pidgin English).
+        Focus on diseases common in Africa: malaria, typhoid, sickle cell, hypertension, diabetes, cholera.
+        Mention local context when relevant (Cameroon hospitals, local medications like Coartem, CNPS insurance).
+        Always end with a reminder to see a doctor for diagnosis. Be warm, clear, and practical.
+        Format responses with bold headers and bullet points for readability.`,
+        messages: [{role: 'user', content: msg}]
+      })
+    });
+    if(res.ok) {
+      const data = await res.json();
+      const reply = data.content.map(i => i.text || '').join('');
+      typingEl.remove();
+      appendMsg(reply, 'bot');
+    } else { throw new Error('API unavailable'); }
+  } catch(e) {
+    typingEl.remove();
+    const q = msg.toLowerCase();
+    let reply = medKB.default;
+    for(const [key, val] of Object.entries(medKB)) {
+      if(key !== 'default' && q.includes(key)) { reply = val; break; }
+    }
+    appendMsg(reply, 'bot');
+  }
+}
+
+function appendMsg(text, type) {
+  const msgs = document.getElementById('chat-msgs');
+  const now = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const div = document.createElement('div');
+  div.className = 'cmsg ' + type;
+  const formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+  div.innerHTML = `<div class="cbubble">${formatted}</div><div class="cmsg-time">${now}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+function appendTyping() {
+  const msgs = document.getElementById('chat-msgs');
+  const div = document.createElement('div');
+  div.className = 'cmsg bot';
+  div.innerHTML = `<div class="cbubble"><div class="typing-ind"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+// ── TOAST ─────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ── CONSOLE BANNER ─────────────────────
+console.log('%cMediBook Africa v2.0', 'font-size:20px;font-weight:bold;color:#0f5c8f');
+console.log('%cDigital Health Passport — Solving Africa\'s Healthcare Challenge', 'color:#0d9e6e');
+console.log('%cDemo: patient@system.com | staff@system.com | admin@system.com', 'color:#7a92b0');
+</script>
+</body>
+</html>
