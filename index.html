@@ -2332,6 +2332,21 @@ function showToast(msg) {
 console.log('%cMediBook Africa v2.0', 'font-size:20px;font-weight:bold;color:#0f5c8f');
 console.log('%cDigital Health Passport — Solving Africa\'s Healthcare Challenge', 'color:#0d9e6e');
 console.log('%cDemo: patient@system.com | staff@system.com | admin@system.com', 'color:#7a92b0');
+
+    // Backend connection with Superbase 
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const supabaseUrl = "https://mtmgzojxfmeilfkiwcwp.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10bWd6b2p4Zm1laWxma2l3Y3dwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NDY5NzIsImV4cCI6MjA5NDQyMjk3Mn0.-CUS52B14tTqFuX84WdOry9LesZypdLFYarkBbwlIzI";
+
+const supabaseClient =
+window.supabase.createClient(
+  supabaseUrl,
+  supabaseKey
+);
+
+console.log("Supabase connected");
 </script>
 </body>
 </html>
