@@ -2099,9 +2099,10 @@ function fillCreds(email, pass, role) {
 async function doLogin() {
   const email = document.getElementById('l-email').value.trim();
   const pass  = document.getElementById('l-pass').value.trim();
+
   if (!email || !pass) { showToast('⚠️ Enter email and password'); return; }
 
-  const btn = document.getElementById('login-btn'); // add id="login-btn" to your button
+  const btn = document.querySelector('#login-modal button');
   if (btn) { btn.disabled = true; btn.textContent = 'Signing in...'; }
 
   const { data, error } = await supabaseClient.auth.signInWithPassword({
@@ -2116,6 +2117,56 @@ async function doLogin() {
     return;
   }
 
+  // Get role from profiles table
+  const { data: profile } = await supabaseClient
+    .from('profiles')
+    .select('role, first_name, last_name')
+    .eq('id', data.user.id)
+    .single();
+
+  const role      = profile?.role       || 'patient';
+  const firstName = profile?.first_name || 'User';
+  const lastName  = profile?.last_name  || '';
+  const initials  = (firstName[0] + (lastName[0] || '')).toUpperCase();
+
+  // Fill sidebar name and avatar for all dashboards
+  ['p-name','s-name','a-name'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = firstName + ' ' + lastName;
+  });
+  ['p-avatar','s-avatar','a-avatar'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = initials;
+  });
+
+  closeModal('login-modal');
+  showToast('✅ Welcome, ' + firstName + '! Loading dashboard...');
+
+  // Go to the correct dashboard
+  setTimeout(() => {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+    // try every possible ID format your HTML might use
+    const pageId = role + '-page';
+    const pageId2 = 'page-' + role;
+    const page = document.getElementById(pageId)
+              || document.getElementById(pageId2)
+              || document.getElementById(role);
+
+    if (page) {
+      page.classList.add('active');
+      window.scrollTo(0, 0);
+    } else {
+      // last resort — show all pages to debug
+      showToast('⚠️ Dashboard not found. Check console (F12).');
+      console.error('Could not find page for role:', role);
+      console.error('Tried IDs:', pageId, pageId2, role);
+      console.log('All page IDs on this page:',
+        [...document.querySelectorAll('.page')].map(p => p.id)
+      );
+    }
+  }, 900);
+}
   // Get the user's role from the profiles table
   const { data: profile } = await supabaseClient
     .from('profiles')
