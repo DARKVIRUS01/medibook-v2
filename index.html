@@ -2099,25 +2099,17 @@ function fillCreds(email, pass, role) {
 async function doLogin() {
   const email = document.getElementById('l-email').value.trim();
   const pass  = document.getElementById('l-pass').value.trim();
-
   if (!email || !pass) { showToast('⚠️ Enter email and password'); return; }
 
-  const btn = document.querySelector('#login-modal button');
+  const btn = document.querySelector('#login-modal .btn-P');
   if (btn) { btn.disabled = true; btn.textContent = 'Signing in...'; }
 
-  const { data, error } = await supabaseClient.auth.signInWithPassword({
-    email: email,
-    password: pass,
-  });
+  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password: pass });
 
   if (btn) { btn.disabled = false; btn.textContent = 'Sign In →'; }
+  if (error) { showToast('❌ ' + error.message); return; }
 
-  if (error) {
-    showToast('❌ ' + error.message);
-    return;
-  }
-
-  // Get role from profiles table
+  // Load real profile from Supabase
   const { data: profile } = await supabaseClient
     .from('profiles')
     .select('role, first_name, last_name')
@@ -2125,47 +2117,375 @@ async function doLogin() {
     .single();
 
   const role      = profile?.role       || 'patient';
-  const firstName = profile?.first_name || 'User';
+  const firstName = profile?.first_name || email.split('@')[0];
   const lastName  = profile?.last_name  || '';
   const initials  = (firstName[0] + (lastName[0] || '')).toUpperCase();
 
-  // Fill sidebar name and avatar for all dashboards
-  ['p-name','s-name','a-name'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = firstName + ' ' + lastName;
-  });
-  ['p-avatar','s-avatar','a-avatar'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = initials;
-  });
+  // Store in window so dashboard can use it
+  window.CURRENT_USER = {
+    id: data.user.id,
+    email: email,
+    role,
+    firstName,
+    lastName,
+    initials
+  };
 
   closeModal('login-modal');
-  showToast('✅ Welcome, ' + firstName + '! Loading dashboard...');
+  showToast('✅ Welcome, ' + firstName + '! Loading your dashboard...');
 
-  // Go to the correct dashboard
   setTimeout(() => {
+    // Show correct page
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-
-    // try every possible ID format your HTML might use
-    const pageId = role + '-page';
-    const pageId2 = 'page-' + role;
-    const page = document.getElementById(pageId)
-              || document.getElementById(pageId2)
-              || document.getElementById(role);
-
+    const page = document.getElementById(role + '-page');
     if (page) {
       page.classList.add('active');
       window.scrollTo(0, 0);
+      // Load real data into the dashboard
+      loadDashboard(role);
     } else {
-      // last resort — show all pages to debug
-      showToast('⚠️ Dashboard not found. Check console (F12).');
-      console.error('Could not find page for role:', role);
-      console.error('Tried IDs:', pageId, pageId2, role);
-      console.log('All page IDs on this page:',
-        [...document.querySelectorAll('.page')].map(p => p.id)
-      );
+      showToast('⚠️ Dashboard not found for role: ' + role);
     }
-  }, 900);
+  }, 800);
+}
+   async function loadDashboard(role) {
+  const user = window.CURRENT_USER;
+  if (!user) return;
+
+  if (role === 'patient') {
+    // ── Fill sidebar with real name ──
+    const nameEl   = document.getElementById('p-name') || document.querySelector('#patient-page .sb-uname');
+    const avatarEl = document.querySelector('#patient-page .sb-avatar');
+    if (nameEl)   nameEl.textContent   = user.firstName + ' ' + user.lastName;
+    if (avatarEl) avatarEl.textContent = user.initials;
+
+    // ── Fill welcome message ──
+    const welcome = document.querySelector('#p-dash .page-hd h1');
+    if (welcome) welcome.textContent = 'Good day, ' + user.firstName + '! 👋';
+
+    // ── Load real medical records ──
+    await loadPatientRecords(user.id);
+
+    // ── Load real prescriptions ──
+    await loadPatientPrescriptions(user.id);
+
+    // ── Load real vitals ──
+    await loadPatientVitals(user.id);
+
+    // ── Fill health passport with real data ──
+    await loadHealthPassport(user.id);
+
+    // ── Subscribe to live updates ──
+    subscribeToLiveUpdates(user.id);
+
+  } else if (role === 'staff') {
+    const nameEl   = document.querySelector('#staff-page .sb-uname');
+    const avatarEl = document.querySelector('#staff-page .sb-avatar');
+    if (nameEl)   nameEl.textContent   = user.firstName + ' ' + user.lastName;
+    if (avatarEl) avatarEl.textContent = user.initials;
+    await loadStaffDashboard();
+
+  } else if (role === 'admin') {
+    const nameEl   = document.querySelector('#admin-page .sb-uname');
+    const avatarEl = document.querySelector('#admin-page .sb-avatar');
+    if (nameEl)   nameEl.textContent   = user.firstName + ' ' + user.lastName;
+    if (avatarEl) avatarEl.textContent = user.initials;
+    await loadAdminStats();
+  }
+}
+
+// ── LOAD PATIENT RECORDS ───────────────────────────────
+async function loadPatientRecords(profileId) {
+  // First get the patient ID from profile
+  const { data: patientData } = await supabaseClient
+    .from('patients')
+    .select('id, patient_code, blood_type, allergies, health_score')
+    .eq('profile_id', profileId)
+    .single();
+
+  if (!patientData) return;
+
+  window.CURRENT_PATIENT = patientData;
+
+  // Update patient code in topbar
+  const pill = document.querySelector('.hpill-txt');
+  if (pill) pill.textContent = '🪪 Health Passport · ' + patientData.patient_code;
+
+  // Update health score
+  const scoreEl = document.querySelector('.sb-health-val');
+  const fillEl  = document.querySelector('.sb-health-fill');
+  if (scoreEl) scoreEl.innerHTML = (patientData.health_score || 75) + '<span style="font-size:14px;opacity:.6">/100</span>';
+  if (fillEl)  fillEl.style.width = (patientData.health_score || 75) + '%';
+
+  // Load medical records
+  const { data: records } = await supabaseClient
+    .from('medical_records')
+    .select('*')
+    .eq('patient_id', patientData.id)
+    .order('created_at', { ascending: false })
+    .limit(20);
+
+  // Update stat card
+  const totalEl = document.querySelector('#p-dash .stat-num');
+  if (totalEl && records) {
+    // find the records stat card specifically
+    document.querySelectorAll('#p-dash .stat-num').forEach((el, i) => {
+      if (i === 1) el.textContent = records?.length || 0;
+    });
+  }
+
+  // Fill recent records in live feed area
+  const feedEl = document.querySelector('#p-dash .live-feed');
+  if (feedEl && records && records.length > 0) {
+    feedEl.innerHTML = records.slice(0, 3).map(r => `
+      <div class="live-item ${r.created_at > new Date(Date.now() - 86400000).toISOString() ? 'new-item' : ''}">
+        <div class="live-icon" style="background:var(--P2)">${getRecordIcon(r.record_type)}</div>
+        <div class="live-content">
+          <div class="live-title">${r.title}</div>
+          <div class="live-msg">${r.description || ''}</div>
+          <div class="live-time">${timeAgo(r.created_at)}</div>
+        </div>
+      </div>
+    `).join('');
+  } else if (feedEl) {
+    feedEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--tx3);font-size:13px">No records yet. Your doctor\'s updates will appear here live.</div>';
+  }
+
+  // Fill full history panel
+  const historyEl = document.getElementById('p-history');
+  if (historyEl && records) {
+    const listArea = historyEl.querySelector('.flex.gap-12.mb-2');
+    // Insert records after the filter bar
+    let existingCards = historyEl.querySelectorAll('.rec-card');
+    existingCards.forEach(c => c.remove());
+
+    if (records.length === 0) {
+      historyEl.insertAdjacentHTML('beforeend', '<div style="text-align:center;padding:40px;color:var(--tx3)">No medical records yet. Ask your doctor to add records via MediBook, or scan your old hospital book.</div>');
+    } else {
+      records.forEach(r => {
+        historyEl.insertAdjacentHTML('beforeend', `
+          <div class="rec-card ${r.record_type === 'prescription' ? 'rx' : r.record_type === 'lab' ? 'lab' : r.record_type === 'scan' ? 'scan' : ''}">
+            <div class="rec-meta">
+              <div class="rec-title">${getRecordIcon(r.record_type)} ${r.title}</div>
+              <div class="rec-date">${formatDate(r.record_date)}</div>
+            </div>
+            <div class="rec-body">${r.description || 'No description provided.'}</div>
+            <div class="rec-tags">
+              <span class="badge b-${getRecordColor(r.record_type)}">${r.record_type}</span>
+              <span class="badge b-${r.status === 'active' ? 'green' : 'gray'}">${r.status || 'active'}</span>
+              ${r.source === 'scan' ? '<span class="badge b-pur">📷 Scanned</span>' : '<span class="badge b-blue">🔴 Live Update</span>'}
+            </div>
+          </div>
+        `);
+      });
+    }
+  }
+}
+
+// ── LOAD PRESCRIPTIONS ─────────────────────────────────
+async function loadPatientPrescriptions(profileId) {
+  if (!window.CURRENT_PATIENT) return;
+
+  const { data: rxList } = await supabaseClient
+    .from('prescriptions')
+    .select('*')
+    .eq('patient_id', window.CURRENT_PATIENT.id)
+    .eq('status', 'active')
+    .order('created_at', { ascending: false });
+
+  // Update stat card
+  document.querySelectorAll('#p-dash .stat-num').forEach((el, i) => {
+    if (i === 0) el.textContent = rxList?.length || 0;
+  });
+
+  // Fill prescriptions panel
+  const rxPanel = document.getElementById('p-rx');
+  if (!rxPanel || !rxList) return;
+
+  const table = rxPanel.querySelector('tbody');
+  if (!table) return;
+
+  if (rxList.length === 0) {
+    table.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--tx3);padding:20px">No active prescriptions. Your doctor will add them here.</td></tr>';
+  } else {
+    table.innerHTML = rxList.map(rx => `
+      <tr>
+        <td><strong>${rx.medication_name}</strong></td>
+        <td>${rx.dosage}</td>
+        <td>${rx.frequency}</td>
+        <td>Dr. ${rx.prescribed_by || 'Unknown'}</td>
+        <td>${rx.end_date ? formatDate(rx.end_date) : rx.duration_days + ' days'}</td>
+        <td>${(rx.refills_allowed - rx.refills_used) || 0} left</td>
+        <td><span class="badge b-green">Active</span></td>
+      </tr>
+    `).join('');
+  }
+}
+
+// ── LOAD VITALS ────────────────────────────────────────
+async function loadPatientVitals(profileId) {
+  if (!window.CURRENT_PATIENT) return;
+
+  const { data: vitals } = await supabaseClient
+    .from('vitals')
+    .select('*')
+    .eq('patient_id', window.CURRENT_PATIENT.id)
+    .order('recorded_at', { ascending: false })
+    .limit(1);
+
+  if (!vitals || vitals.length === 0) return;
+
+  const v = vitals[0];
+
+  // Update vitals cards on dashboard
+  const vitalCards = document.querySelectorAll('#p-dash .vital-val');
+  if (vitalCards[0] && v.bp_systolic) vitalCards[0].innerHTML = v.bp_systolic + '<span style="font-size:14px">/' + v.bp_diastolic + '</span>';
+  if (vitalCards[1] && v.temperature) vitalCards[1].textContent = v.temperature + '°';
+  if (vitalCards[2] && v.heart_rate)  vitalCards[2].textContent = v.heart_rate;
+  if (vitalCards[3] && v.spo2)        vitalCards[3].textContent = v.spo2;
+  if (vitalCards[4] && v.weight_kg)   vitalCards[4].textContent = v.weight_kg;
+}
+
+// ── LOAD HEALTH PASSPORT ───────────────────────────────
+async function loadHealthPassport(profileId) {
+  const user = window.CURRENT_USER;
+  const patient = window.CURRENT_PATIENT;
+  if (!user || !patient) return;
+
+  // Update passport modal with real data
+  const passportName = document.querySelector('#printable-passport .hp-name');
+  const passportId   = document.querySelector('#printable-passport .hp-id');
+  const passportPhoto = document.querySelector('#printable-passport .hp-photo');
+
+  if (passportName)  passportName.textContent  = user.firstName + ' ' + user.lastName;
+  if (passportId)    passportId.textContent    = 'ID: ' + patient.patient_code;
+  if (passportPhoto) passportPhoto.textContent = user.initials;
+
+  // Update allergy tags
+  if (patient.allergies && patient.allergies.length > 0) {
+    const allergyEl = document.querySelector('#printable-passport .hp-allergy strong');
+    if (allergyEl) allergyEl.textContent = '⚠️ ALLERGY: ' + patient.allergies.join(', ');
+  }
+
+  // Update blood type
+  const bloodEl = document.querySelector('#printable-passport [style*="4ade80"]');
+  if (bloodEl && patient.blood_type) bloodEl.textContent = 'Blood: ' + patient.blood_type;
+}
+
+// ── LOAD STAFF DASHBOARD ───────────────────────────────
+async function loadStaffDashboard() {
+  // Count today's patients
+  const today = new Date().toISOString().split('T')[0];
+  const { count: patientCount } = await supabaseClient
+    .from('patients')
+    .select('*', { count: 'exact', head: true });
+
+  const { count: recordCount } = await supabaseClient
+    .from('medical_records')
+    .select('*', { count: 'exact', head: true })
+    .gte('created_at', new Date(Date.now() - 7*86400000).toISOString());
+
+  // Update stat cards
+  const statNums = document.querySelectorAll('#staff-page .stat-num');
+  if (statNums[0]) statNums[0].textContent = patientCount || 0;
+  if (statNums[1]) statNums[1].textContent = recordCount  || 0;
+
+  // Load patient list for dropdowns
+  await loadPatientDropdowns();
+}
+
+// ── LOAD ADMIN STATS ───────────────────────────────────
+async function loadAdminStats() {
+  const { count: patients } = await supabaseClient.from('patients').select('*', { count: 'exact', head: true });
+  const { count: staff }    = await supabaseClient.from('staff').select('*', { count: 'exact', head: true });
+  const { count: records }  = await supabaseClient.from('medical_records').select('*', { count: 'exact', head: true });
+  const { count: rxCount }  = await supabaseClient.from('prescriptions').select('*', { count: 'exact', head: true }).eq('status','active');
+
+  const statNums = document.querySelectorAll('#admin-page .stat-num');
+  if (statNums[0]) statNums[0].textContent = patients || 0;
+  if (statNums[1]) statNums[1].textContent = staff    || 0;
+  if (statNums[2]) statNums[2].textContent = records  || 0;
+  if (statNums[3]) statNums[3].textContent = rxCount  || 0;
+}
+
+// ── LOAD PATIENT DROPDOWNS FOR STAFF ──────────────────
+async function loadPatientDropdowns() {
+  const { data: patients } = await supabaseClient
+    .from('patient_full_profile')
+    .select('id, full_name, patient_code')
+    .order('full_name');
+
+  if (!patients) return;
+
+  const options = patients.map(p =>
+    `<option value="${p.id}">${p.full_name} — ${p.patient_code}</option>`
+  ).join('');
+
+  ['diag-patient','rx-patient','lab-patient','vital-patient','appt-patient']
+    .forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = '<option value="">Select patient...</option>' + options;
+    });
+}
+
+// ── LIVE REALTIME SUBSCRIPTION ────────────────────────
+function subscribeToLiveUpdates(profileId) {
+  if (!window.CURRENT_PATIENT) return;
+
+  supabaseClient
+    .channel('live-records-' + window.CURRENT_PATIENT.id)
+    .on('postgres_changes', {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'medical_records',
+      filter: 'patient_id=eq.' + window.CURRENT_PATIENT.id
+    }, (payload) => {
+      const r = payload.new;
+      showToast('🔴 Live update from your doctor: ' + r.title);
+
+      // Add to live feed instantly
+      const feedEl = document.querySelector('#p-dash .live-feed');
+      if (feedEl) {
+        feedEl.insertAdjacentHTML('afterbegin', `
+          <div class="live-item new-item">
+            <div class="live-icon" style="background:var(--G2)">${getRecordIcon(r.record_type)}</div>
+            <div class="live-content">
+              <div class="live-title">${r.title}</div>
+              <div class="live-msg">${r.description || ''}</div>
+              <div class="live-time">🔴 Live · just now</div>
+            </div>
+            <div class="live-dot"></div>
+          </div>
+        `);
+      }
+    })
+    .subscribe();
+}
+
+// ── HELPERS ────────────────────────────────────────────
+function getRecordIcon(type) {
+  const icons = { diagnosis:'🩺', prescription:'💊', lab:'🔬', vital:'📈', scan:'📷', note:'📝', procedure:'⚕️', vaccination:'💉' };
+  return icons[type] || '📋';
+}
+
+function getRecordColor(type) {
+  const colors = { diagnosis:'blue', prescription:'green', lab:'amber', scan:'pur', vital:'teal' };
+  return colors[type] || 'gray';
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return '—';
+  return new Date(dateStr).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+}
+
+function timeAgo(dateStr) {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  const hrs  = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+  if (mins < 60)  return mins + ' minutes ago';
+  if (hrs  < 24)  return hrs  + ' hours ago';
+  return days + ' days ago';
 }
 
 async function doRegister() {
