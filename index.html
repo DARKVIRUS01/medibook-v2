@@ -2167,20 +2167,6 @@ async function doLogin() {
     }
   }, 900);
 }
-  // Get the user's role from the profiles table
-  const { data: profile } = await supabaseClient
-    .from('profiles')
-    .select('role, first_name')
-    .eq('id', data.user.id)
-    .single();
-
-  const role = profile?.role || 'patient';
-  const name = profile?.first_name || 'User';
-
-  closeModal('login-modal');
-  showToast('✅ Welcome back, ' + name + '! Loading your dashboard...');
-  setTimeout(() => goPage('page-' + role), 900);  // goes to page-patient, page-staff, or page-admin
-}
 
 async function doRegister() {
   const first    = document.getElementById('r-first').value.trim();
